@@ -13,56 +13,16 @@ Funcion opcion_elegida <- elegir_opcion
 			Escribir "Opcion invalida, intenta una de las opciones dadas."
 		Fin Si
 	Hasta Que done = Verdadero
-	
 FinFuncion
 
-Funcion capturar_datos 
-	// es imposible validar que los valores son numericos. 
-	
-	// alumno 1
-	Escribir "Escribe el nombre del alumno 1: "
-	Leer alumno1_nombre
-	Escribir "Su calificacion de primer parcial: "
-	Leer alumno1_parcial1
-	Escribir "Su calificacion de segundo parcial: "
-	Leer alumno1_parcial2
-	Escribir "Su calificacion de tercer parcial: "
-	Leer alumno1_parcial3
-	
-	// alumno 2
-	Escribir "Escribe el nombre del alumno 1: "
-	Leer alumno2_nombre
-	Escribir "Su calificacion de primer parcial: "
-	Leer alumno2_parcial1
-	Escribir "Su calificacion de segundo parcial: "
-	Leer alumno2_parcial2
-	Escribir "Su calificacion de tercer parcial: "
-	Leer alumno2_parcial3
-	
-	// alumno 3 
-	Escribir "Escribe el nombre del alumno 1: "
-	Leer alumno3_nombre
-	Escribir "Su calificacion de primer parcial: "
-	Leer alumno3_parcial1
-	Escribir "Su calificacion de segundo parcial: "
-	Leer alumno3_parcial2
-	Escribir "Su calificacion de tercer parcial: "
-	Leer alumno3_parcial3
-	
-	hay_datos = Verdadero
+Funcion escribir_promedios(n1, p1, n2, p2, n3, p3) 
+	Limpiar Pantalla
+	Escribir "El alumno " n1 " tiene el promedio de " p1
+	Escribir "El alumno " n2 " tiene el promedio de " p2
+	Escribir "El alumno " n3 " tiene el promedio de " p3
 FinFuncion
 
-Funcion mostrar_promedios
-	Escribir "El alumno " alumno1 " tiene el promedio de " (alumno1_parcial1 + alumno1_parcial2 + alumno1_parcial3)/3
-	Escribir "El alumno " alumno2 " tiene el promedio de " (alumno2_parcial1 + alumno2_parcial2 + alumno2_parcial3)/3
-	Escribir "El alumno " alumno3 " tiene el promedio de " (alumno3_parcial1 + alumno3_parcial2 + alumno3_parcial3)/3
-FinFuncion
-
-funcion mostrar_mejor_promedio	
-	Dimensionar vec[3]
-	promedio1 = (alumno1_parcial1 + alumno1_parcial2 + alumno1_parcial3)/3
-	promedio2 = (alumno2_parcial1 + alumno2_parcial2 + alumno2_parcial3)/3
-	promedio3 = (alumno3_parcial1 + alumno3_parcial2 + alumno3_parcial3)/3
+Funcion escribir_promedio_mayor(alumno1_nombre, promedio1, alumno2_nombre, promedio2, alumno3_nombre, promedio3)
 	
 	si promedio1 > promedio2 y promedio1 > promedio3 Entonces
 		nerd = alumno1_nombre
@@ -80,24 +40,57 @@ funcion mostrar_mejor_promedio
 	Escribir "La mayor calificacion de " mejor_promedio " pertenece a " nerd
 FinFuncion
 
-
-
+	
 Algoritmo main
     hay_datos = Falso
+	Dimensionar datos[12]
 	Repetir
 	    opcion_elegida = ConvertirANumero(elegir_opcion)
 		Segun opcion_elegida Hacer
 		    1:
-			    capturar_datos
+				// alumno 1
+				Escribir "Escribe el nombre del alumno 1: "
+				Leer alumno1_nombre
+				Escribir "Su calificacion de primer parcial: "
+				Leer alumno1_parcial1
+				Escribir "Su calificacion de segundo parcial: "
+				Leer alumno1_parcial2
+				Escribir "Su calificacion de tercer parcial: "
+				Leer alumno1_parcial3
+				alumno1_promedio = (alumno1_parcial1 + alumno1_parcial2 + alumno1_parcial3)/3
+				
+				// alumno 2
+				Escribir "Escribe el nombre del alumno 2: "
+				Leer alumno2_nombre
+				Escribir "Su calificacion de primer parcial: "
+				Leer alumno2_parcial1
+				Escribir "Su calificacion de segundo parcial: "
+				Leer alumno2_parcial2
+				Escribir "Su calificacion de tercer parcial: "
+				Leer alumno2_parcial3
+				alumno2_promedio = (alumno2_parcial1 + alumno2_parcial2 + alumno2_parcial3)/3
+				
+				// alumno 3 
+				Escribir "Escribe el nombre del alumno 3: "
+				Leer alumno3_nombre
+				Escribir "Su calificacion de primer parcial: "
+				Leer alumno3_parcial1
+				Escribir "Su calificacion de segundo parcial: "
+				Leer alumno3_parcial2
+				Escribir "Su calificacion de tercer parcial: "
+				Leer alumno3_parcial3
+				alumno3_promedio = (alumno3_parcial1 + alumno3_parcial2 + alumno3_parcial3)/3
+				
+				hay_datos = Verdadero
 		    2:
 			    Si hay_datos == Verdadero Entonces
-				    mostrar_promedios
+				    escribir_promedios(alumno1_nombre, alumno1_promedio, alumno2_nombre, alumno2_promedio, alumno3_nombre, alumno3_promedio)
 			    SiNo
 				    Escribir "No hay datos para procesar"
 			    Fin Si
 		    3:
 			    Si hay_datos == Verdadero Entonces
-				    mostrar_mejor_promedio
+					escribir_promedio_mayor(alumno1_nombre, alumno1_promedio, alumno2_nombre, alumno2_promedio, alumno3_nombre, alumno3_promedio)
 			    SiNo
 				    Escribir "No hay datos para procesar"
 			    Fin Si
