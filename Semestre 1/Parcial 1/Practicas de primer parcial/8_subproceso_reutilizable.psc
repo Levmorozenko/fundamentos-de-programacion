@@ -10,7 +10,9 @@ Funcion promedio <- CalcularPromedio(num1, num2, num3)
 	promedio = (num1 + num2 + num3 ) /3
 FinFuncion
 
-Algoritmo subproceso_reutilizable // porque pseint tiene punteros pero no se pueden meter vectores dentro de vectores ni existen tuples? 
+Algoritmo subproceso_reutilizable 
+	// porque pseint tiene punteros
+	// pero no se pueden meter vectores dentro de vectores ni existen tuples? 
 	procesar_promedio
 	procesar_promedio
 FinAlgoritmo
