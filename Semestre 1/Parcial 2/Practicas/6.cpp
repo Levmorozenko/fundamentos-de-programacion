@@ -2,6 +2,7 @@
 // calif[3]; } y crea un arreglo de 5 alumnos. Captura sus datos y muestra el
 // promedio de cada uno.
 #include "custom.cpp"
+#include <cmath>
 #include <string>
 #include <vector>
 using namespace custom;
@@ -58,14 +59,17 @@ int main() {
     cout << "Datos del alumno " << i + 1 << ": " << endl;
     cout << "Nombre:    " << alumnos[i].nombre << endl;
     cout << "Matricula: " << alumnos[i].matricula << endl;
-    cout << "Promedio:  " << [&](float c[3]) -> int {
-      int suma;
+
+    cout << "Promedio:  ";
+    cout << [&](float c[3]) -> float {
+      float suma;
       for (int i = 0; i < 3; i++) {
         suma += c[i];
       }
-      return suma / 3.0;
-    }(alumnos[i].calif) << endl
-                        << endl;
+      return round(suma / 3.0 * 10.0) / 10.0;
+    }(alumnos[i].calif);
+
+    cout << endl << endl;
   }
 
   return 0;
