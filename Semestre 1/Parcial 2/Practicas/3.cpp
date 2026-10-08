@@ -5,6 +5,7 @@
 using namespace custom;
 
 int main() {
+  custom_cls();
   // ===========================================================================
   // llena los promedios de alumnos
   int matriz[3][10]; // 3 arrays, 10 items in each array

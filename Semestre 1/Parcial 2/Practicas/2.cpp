@@ -19,6 +19,8 @@ vector<float> fill_array_rand(vector<float> array) {
 }
 
 int main() {
+  custom_cls();
+
   vector<float> grupo1 = fill_array_rand(vector<float>(5));
   vector<float> grupo2 = fill_array_rand(vector<float>(5));
 

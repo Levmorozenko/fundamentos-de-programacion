@@ -8,6 +8,8 @@ using namespace std;
 using namespace custom;
 
 int main() {
+  custom_cls();
+
   vector<int> arreglo(6);
 
   for (int i = 0; i < 5; i++) {
@@ -21,7 +23,7 @@ int main() {
   for (int i = 0; i < arreglo.size() - 1; i++) {
     cout << arreglo[i] << " ";
   }
-  cout << "y el promedio es: " << arreglo[5];
+  cout << "y el promedio es: " << arreglo[5] << endl << endl;
 
   return 0;
 }
