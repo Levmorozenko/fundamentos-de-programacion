@@ -18,8 +18,8 @@ void intercambiar(int *a, int *b) {
 int main() {
   custom_cls();
 
-  int num1 = 2;
-  int num2 = 5;
+  int num1 = random::digit();
+  int num2 = random::digit();
   cout << "num1 es: " << num1 << endl;
   cout << "num2 es: " << num2 << endl;
   cout << "Y el resultado de num1 / num2 es: "
