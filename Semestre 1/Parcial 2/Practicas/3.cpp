@@ -20,13 +20,13 @@ int main() {
         ((matriz[0][i] > matriz[1][i]) ? matriz[0][i] : matriz[1][i]);
   }
 
-  cout << "Las calificaciones de grupo 1: ";
+  cout << "Las calificaciones de grupo 1:   ";
   for (float i : matriz[0]) {
     cout << i << " ";
   }
   cout << endl;
 
-  cout << "Las calificaciones de grupo 2: ";
+  cout << "Las calificaciones de grupo 2:   ";
   for (float i : matriz[1]) {
     cout << i << " ";
   }
