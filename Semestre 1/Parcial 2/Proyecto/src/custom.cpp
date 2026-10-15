@@ -114,6 +114,7 @@ static const string thin_separator =
 //
 // Entre las soluciones 2 y 3, elijo la 2. Durante este experimento gigante
 // aprendi mucho de c++ y repase muchos conceptos como encodificacion de letras.
+// Ademas, finalmente gané al ɠ malvado.
 //
 // Los siguientes regexes son funcionales:
 static const wregex name_regex(L"^[\\x20-\\x3E\\x40-\\x7E\\xC0-\\xFF]+$");
