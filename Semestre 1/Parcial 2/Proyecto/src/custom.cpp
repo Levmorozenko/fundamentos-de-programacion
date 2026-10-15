@@ -63,27 +63,8 @@ static const string thin_separator =
 // Asi mismo la expresion de regex deberia ser: /^[\x20-\x7E\xC0-\xFF]+$/,
 // verdad? Pensé que si, pero luego metí el caracter "ɠ" y lo pasó por correcto.
 // Eso me enfadó y organizé una investigacion extensa contra este bug. Resulta
-// que no es solo culpa del regex. El discurso se continua en la funcion
-// get_regexed_input.
-static const wregex name_regex(L"^[\x20-\x7E\xC0-\xFF]+$");
-
-// Nota sobre const y static segun
-// https://stackoverflow.com/questions/2216239/what-is-the-difference-between-a-static-and-const-variable
-// 		`const` is a promise you won't try to modify a value
-//		`static` means that object is initialized
-
-static const wregex digit_regex(L"[0-9]+");
-
-// regex no es facil de escribir, mil gracias a https://regex101.com
-// recordatorio de usar \\ cada vez que se necesita entrar un \, especialmente
-// en paths y regexes.
-static const wregex float_regex(L"\\d+(\\.\\d+)?");
-
-wstring trim(wstring str) { return str; }
-
-// Continuacion del regex:
-// std::stdin acepta toda entrada como UTF-8, pero UTF-8 puede
-// ocupar de 1 a 4 bytes, dependiendo del caracter y sistema operativo.
+// que no es solo culpa del regex. std::stdin acepta toda entrada como UTF-8,
+// pero UTF-8 puede ocupar de 1 a 4 bytes, dependiendo del caracter.
 //
 // Solucion 1:
 // Podemos validar que la cadena del texto es conformada por characteres de
@@ -99,19 +80,66 @@ wstring trim(wstring str) { return str; }
 // Adaptar todo el programa a usar std::wstring en vez de std::string. Es un
 // problema ya que todo el programa tendrá que ser modificado (ej. cout ->
 // wcout). Ademas introducerá problemas posibles con otras bibliotecas.
-// Sin embargo, nada nos para de obtener entrada como wstring y transformarlo en
-// string para uso en todos los demas lugares. Asi mismo podemos validar el
-// texto con iteracion sobre code points en vez de bytes. Esta solucion es la
-// mas elegante que personalmente he encontrado.
+// Sin embargo, nada nos para de obtener entrada como wstring, verificar contra
+// regex y luego transformarlo en string, para su uso en otros lugares. Con
+// wregex podemos validar el texto con iteracion sobre code points en vez de
+// bytes. Esta solucion es la mas elegante que personalmente he encontrado.
+//
+// -----------------------------------------------------------------------------
+//
+// Problema 2: el caracter malvado ɠ todavia se puede pasar. De lo que descubrí,
+// wchar_t, de cual depende wregex, wstring, etcetera, depende del locale de
+// windows.
+//
+// Solucion 1:
+// No usar regex. Regex itera sobre cada caracter y checa si esta dentro del
+// rango. Hemos encontrado los rangos necesarios, ahora lo podemos hacer
+// manualmente. Esta solucion no funcionó porque el problema no fue en la
+// verificacion. El problema es en encodificacion de wcin. Mi enum con
+// implementacion manual fue inutil.
+//
+// Extension de problema 2: Tras agregar:
+// for (wchar_t c : winput) { wcout << hex << (int)c << L" ";} // funcion de IA
+// Se descubre que el ɠ tiene valor de 0x3F, el simbolo "?" de ASCII. En algun
+// momento del procesamiento se pierde el valor y es convertido al fallback de
+// "?". Asi mismo:
+//
+// Solucion 2:
+// Banear simbolo "?" a traves de excluirlo del rango.
+// 0x20-0x7E -> 0x20-0x3E 0x40-0x7E
+//
+// Solucion 3:
+// Dar toda la vuelta y regresar al std::cin y leer los bytes manualmente,
+// convertirlos a utf-8 y luego checarlo a traves de wregex.
+//
+// Entre las soluciones 2 y 3, elijo la 2. Durante este experimento gigante
+// aprendi mucho de c++ y repase muchos conceptos como encodificacion de letras.
+//
+// Los siguientes regexes son funcionales:
+static const wregex name_regex(L"^[\\x20-\\x3E\\x40-\\x7E\\xC0-\\xFF]+$");
+static const wregex digit_regex(L"[0-9]+");
+static const wregex float_regex(L"\\d+(\\.\\d+)?");
+
+// Nota sobre const y static:
+//		`static` means that object is initialized
+// 		`const` is a promise you won't try to modify a value
+
+wstring trim(wstring str) {
+  auto start = str.find_first_not_of(L" ");
+  auto end = str.find_last_not_of(L" ");
+  str = str.substr(start, end - start + 1);
+  return str;
+}
 
 string get_regexed_input(const char *msg, wregex regex, const char *error_msg) {
-  wstring input;
+  wstring winput;
   bool valid;
+
   do {
     cout << msg << endl;
-    getline(wcin, input);
-    input = trim(input);
-    valid = regex_match(input, regex);
+    getline(wcin, winput);
+    winput = trim(winput);
+    valid = regex_match(winput, regex) && winput.length() > 0;
 
     if (!valid) {
       cout << error_msg << endl;
@@ -120,11 +148,11 @@ string get_regexed_input(const char *msg, wregex regex, const char *error_msg) {
   cout << "\n";
 
   // convercion de wstring a string de https://stackoverflow.com/a/12097772
-  string processed_input(input.length(), 0);
-  transform(input.begin(), input.end(), processed_input.begin(),
+  string input(winput.length(), 0);
+  transform(winput.begin(), winput.end(), input.begin(),
             [](wchar_t c) { return (char)c; });
 
-  return processed_input;
+  return input;
 }
 
 void await_enter() {
