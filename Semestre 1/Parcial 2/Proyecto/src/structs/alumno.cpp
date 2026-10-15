@@ -37,7 +37,8 @@ void imprimir_todos(vector<Alumno> &alumnos) {
 Alumno crear_random(vector<Grupo> &grupos) {
   Alumno alumno;
   const static string nombres[10] = {
-      "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
+      "nombre0", "nombre1", "nombre2", "nombre3", "nombre4",
+      "nombre5", "nombre6", "nombre7", "nombre8", "nombre9",
   };
   alumno.nombre = nombres[custom::random_raw_number() % (size(nombres))];
   alumno.matricula = []() -> string {
