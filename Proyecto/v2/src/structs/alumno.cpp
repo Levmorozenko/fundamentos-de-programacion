@@ -101,10 +101,13 @@ void imprimir_cantidad_de_alumnos_por_carrera(vector<Grupo> &grupos,
   // map<carrera, lista_de_indices_de(grupos)>
   unordered_map<string, vector<int>> carreras;
   for (int i = 0; i < grupos.size(); i++) {
-    // porque algunas cosas tienen un monton de comportamiento pre-determinado,
-    // pero tantas cosas obvias y faciles de plano no existen? Es esta la
-    // filosofia de puristas de c++ en linux kernel? Tener esto pero no tener
-    // std::string::trim()?
+    // Porque algunas cosas tienen un monton de comportamiento pre-determinado,
+    // pero tantas cosas obvias y faciles de plano no existen? Es mejor tener
+    // esto pero no tener std::string::trim()? Dos archivos no pueden importar
+    // el mismo archivo con mismas definicion o el preprocesador se te explota?
+    // No tener scopes faciles con {... return x;}? Pero hashmap te hace todo el
+    // trabajo en lookup/edit por ti. Cada vez aprendo mas razones por cual los
+    // puristas de c++ estan incorrectos.
     carreras[grupos[i].carrera].push_back(i);
   }
 
