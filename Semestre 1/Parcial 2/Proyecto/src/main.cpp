@@ -7,7 +7,11 @@
 // unicamente porque tarea pide que usemos structs especificos.
 // - regex.
 // - Se me dificulta la diferencia entre referencia y puntero, porque una
-// referencia de Rust es un puntero en C++.
+// referencia de Rust es un puntero en C++. En vez de eso, las * son
+// dereferencias para referencias en Rust.
+// - No hay ni una fuga de memoria porque todos datos son liberados en un
+// return. En main() solo se guardan valores importantes. A base de esto fue
+// creada la arquitectura del proyecto.
 
 int main() {
   bool modo_aleatorio = false;
@@ -35,7 +39,8 @@ int main() {
     cout << "7) Imprimir el alumno con promedio mas alto del grupo\n";
     cout << "8) Imprimir alumnos de misma carrera\n\n";
 
-    cout << "9) Salir del programa\n\n";
+    cout << "9) Salir del programa\n";
+    cout << custom::thick_separator << endl;
 
     string input = custom::get_regexed_input(
         "Seleccione una opcion: ", custom::digit_regex,
@@ -109,6 +114,12 @@ int main() {
       break;
 
     case 8:
+      if (!grupos.empty() && !alumnos.empty()) {
+        alumno::imprimir_cantidad_de_alumnos_por_carrera(grupos, alumnos);
+      } else {
+        cout << "Se deben registrar minimo un grupo y un alumno primero.\n";
+        custom::await_enter();
+      }
       break;
 
     case 9:
@@ -120,7 +131,8 @@ int main() {
         cout << "Entraste el codigo secreto. Ahora todos registros generan un "
                 "objeto con valores aleatorios.\n\n";
       } else {
-        cout << "Entraste el codigo secreto por la segunda vez. Modo manual es "
+        cout << "Entraste el codigo secreto por la segunda vez. Modo manual "
+                "es "
                 "reactivado.\n\n";
       }
       custom::await_enter();

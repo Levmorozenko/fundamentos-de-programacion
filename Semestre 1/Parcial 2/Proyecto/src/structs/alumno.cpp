@@ -1,6 +1,7 @@
 #include "../custom.cpp"
 #include "../structs.cpp"
 #include "grupo.cpp"
+#include <unordered_map>
 #include <vector>
 
 // ##################
@@ -35,6 +36,10 @@ void imprimir_todos(vector<Alumno> &alumnos, string msg = "Alumnos: ") {
   custom::await_enter();
 }
 
+// Abstraccion es posible, mas no es deseada. Ya asbtraí todo lo demas del
+// programa. Ademas, conozco la ineficiencia de copiar los Alumno-s enteros a
+// los vectores en vez de referencias, pero me faltan 3 horas y media para la.
+// Espero implementar eso en Proyecto v3.
 void imprimir_alumno_con_mayor_promedio_del_grupo(vector<Grupo> &grupos,
                                                   vector<Alumno> &alumnos) {
   custom::clear_terminal();
@@ -88,6 +93,67 @@ void imprimir_alumno_con_mayor_promedio_del_grupo(vector<Grupo> &grupos,
   string msg = "Alumno" + string(nerd_list.size() > 1 ? "" : "s") +
                " con mayor promedio del grupo: ";
   imprimir_todos(nerd_list, msg);
+}
+
+// podria ser utilizado mejor, pero es funcional, y es lo mas importante.
+void imprimir_cantidad_de_alumnos_por_carrera(vector<Grupo> &grupos,
+                                              vector<Alumno> &alumnos) {
+  custom::clear_terminal();
+  cout << custom::thick_separator << endl;
+  cout << "Carreras registradas: " << endl;
+
+  // map<carrera, lista_de_indices_de(grupos)>
+  unordered_map<string, vector<int>> carreras;
+  for (int i = 0; i < grupos.size(); i++) {
+    // porque algunas cosas tienen un monton de comportamiento pre-determinado,
+    // pero tantas cosas obvias y faciles de plano no existen? Es esta la
+    // filosofia de puristas de c++ en linux kernel? Tener esto pero no tener
+    // std::string::trim()?
+    carreras[grupos[i].carrera].push_back(i);
+  }
+
+  int counter = 1;
+  vector<string> carreras_keys; // no encontre una funcion para iterar sobre
+                                // cada clave, asi que lo hago manualmente.
+  for (auto [claves, indices] : carreras) {
+    cout << counter << ") " << claves << " - ";
+    for (int n : indices) {
+      cout << grupos[n].nombre << ", ";
+    }
+    cout << endl;
+    carreras_keys.push_back(claves);
+    counter += 1;
+  }
+
+  int input;
+  bool valid;
+  do {
+    input = stoi(custom::get_regexed_input(
+        "Selecciona la carrera: ", custom::digit_regex,
+        "Por favor selecciona la carrera de la lista."));
+    input -= 1;
+    valid = input >= 0 && input < carreras_keys.size();
+  } while (!valid);
+
+  string carrera_elegida = carreras_keys[input];
+  const vector<int> &indices = carreras[carrera_elegida];
+
+  int cantidad = 0;
+  for (const Alumno &alumno : alumnos) {
+    for (int g : indices) {
+      if (alumno.grupo == g) {
+        cantidad++;
+        break;
+      }
+    }
+  }
+
+  custom::clear_terminal();
+  cout << custom::thick_separator << endl;
+  cout << "La carrera " << carrera_elegida << " tiene " << cantidad
+       << " alumnos.\n";
+  cout << custom::thick_separator << endl;
+  custom::await_enter();
 }
 
 // Crea alumno con valores aleatorios.

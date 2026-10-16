@@ -15,7 +15,7 @@ using namespace std;
 #define fr(i, b) for (int i = 0; i < b; i++)
 
 namespace custom {
-int random_raw_number() {
+int random_raw_number() { // reutilizado
   random_device rd;
   return abs(static_cast<int>(rd()));
 }
@@ -125,7 +125,7 @@ static const wregex float_regex(L"\\d+(\\.\\d+)?");
 //		`static` means that object is initialized
 // 		`const` is a promise you won't try to modify a value
 
-wstring trim(wstring str) {
+wstring trim(wstring str) { // reutilizado
   auto start = str.find_first_not_of(L" ");
   auto end = str.find_last_not_of(L" ");
   str = str.substr(start, end - start + 1);
