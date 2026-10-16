@@ -1,12 +1,13 @@
 #include "structs.cpp"
-#include "structs/alumno.cpp"
-#include "structs/grupo.cpp"
+#include "structs/alumno.cpp" // tambien incluye grupo.cpp
 #include "structs/maestro.cpp"
 
 // Notas generales:
 // - La jierarquia es chueca y no me gusta. Fue desarollada de tal manera
-// 	unicamente porque tarea pide que usemos structs especificos.
-// - regex que tan maravillosamente he construido no funciona como deberia.
+// unicamente porque tarea pide que usemos structs especificos.
+// - regex.
+// - Se me dificulta la diferencia entre referencia y puntero, porque una
+// referencia de Rust es un puntero en C++.
 
 int main() {
   bool modo_aleatorio = false;
@@ -25,11 +26,16 @@ int main() {
     cout << "Que desee usted hoy del humilde programa?\n";
     cout << "1) Registrar alumno\n";
     cout << "2) Registrar maestro\n";
-    cout << "3) Registrar grupo\n";
+    cout << "3) Registrar grupo\n\n";
+
     cout << "4) Imprimir todos datos de alumnos\n";
     cout << "5) Imprimir todos datos de maestros\n";
-    cout << "6) Imprimir todos datos de grupos\n";
-    cout << "7) Salir del programa\n\n";
+    cout << "6) Imprimir todos datos de grupos\n\n";
+
+    cout << "7) Imprimir el alumno con promedio mas alto del grupo\n";
+    cout << "8) Imprimir alumnos de misma carrera\n\n";
+
+    cout << "9) Salir del programa\n\n";
 
     string input = custom::get_regexed_input(
         "Seleccione una opcion: ", custom::digit_regex,
@@ -94,12 +100,29 @@ int main() {
       break;
 
     case 7:
+      if (!grupos.empty() && !alumnos.empty()) {
+        alumno::imprimir_alumno_con_mayor_promedio_del_grupo(grupos, alumnos);
+      } else {
+        cout << "Se deben registrar minimo un grupo y un alumno primero.\n";
+        custom::await_enter();
+      }
+      break;
+
+    case 8:
+      break;
+
+    case 9:
       return 0;
 
     case 67:
-      modo_aleatorio = true;
-      cout << "Entraste el codigo secreto. Ahora todos registros generan un "
-              "objeto con valores aleatorios.\n\n";
+      modo_aleatorio = !modo_aleatorio;
+      if (modo_aleatorio) {
+        cout << "Entraste el codigo secreto. Ahora todos registros generan un "
+                "objeto con valores aleatorios.\n\n";
+      } else {
+        cout << "Entraste el codigo secreto por la segunda vez. Modo manual es "
+                "reactivado.\n\n";
+      }
       custom::await_enter();
       break;
 

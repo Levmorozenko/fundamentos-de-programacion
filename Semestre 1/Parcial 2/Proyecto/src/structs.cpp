@@ -8,6 +8,7 @@ struct Alumno {
   string nombre;
   string matricula;
   float calif[3];
+  float promedio;
   int grupo; // ...int?
 };
 struct Maestro {

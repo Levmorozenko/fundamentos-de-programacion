@@ -23,7 +23,7 @@ int random_raw_number() {
 float promedio(float x[], int size) {
   float suma = 0.0;
   fr(i, size) suma += x[i];
-  return suma / static_cast<float>(size);
+  return round(suma / static_cast<float>(size) * 10.0f) / 10.0f;
 }
 
 // Desafortunadamente esta linea remueve portabilidad a linux.
@@ -139,7 +139,9 @@ string get_regexed_input(const char *msg, wregex regex, const char *error_msg) {
   do {
     cout << msg << endl;
     getline(wcin, winput);
-    winput = trim(winput);
+    if (!winput.empty()) {
+      winput = trim(winput);
+    }
     valid = regex_match(winput, regex) && winput.length() > 0;
 
     if (!valid) {

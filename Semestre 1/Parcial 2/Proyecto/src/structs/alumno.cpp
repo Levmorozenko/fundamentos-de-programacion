@@ -1,5 +1,7 @@
 #include "../custom.cpp"
 #include "../structs.cpp"
+#include "grupo.cpp"
+#include <vector>
 
 // ##################
 // ##### ALUMNO #####
@@ -19,10 +21,10 @@ void imprimir(Alumno &alumno) {
   cout << "Grupo:          " << alumno.grupo + 1 << endl;
 }
 
-void imprimir_todos(vector<Alumno> &alumnos) {
+void imprimir_todos(vector<Alumno> &alumnos, string msg = "Alumnos: ") {
   custom::clear_terminal();
   cout << custom::thick_separator << endl;
-  cout << "Alumnos: " << endl;
+  cout << msg << endl;
 
   for (Alumno i : alumnos) {
     cout << custom::thin_separator << endl;
@@ -31,6 +33,61 @@ void imprimir_todos(vector<Alumno> &alumnos) {
   cout << custom::thin_separator << endl;
 
   custom::await_enter();
+}
+
+void imprimir_alumno_con_mayor_promedio_del_grupo(vector<Grupo> &grupos,
+                                                  vector<Alumno> &alumnos) {
+  custom::clear_terminal();
+  cout << custom::thick_separator << endl;
+  cout << "Grupos registrados: " << endl;
+  for (size_t i = 0; i < grupos.size(); i++) {
+    cout << i + 1 << ") " << grupos[i].nombre << " - " << grupos[i].carrera
+         << endl;
+  }
+
+  int input;
+  bool valid;
+  do {
+    input = stoi(custom::get_regexed_input(
+        "Selecciona el grupo: ", custom::digit_regex,
+        "Por favor selecciona el grupo de la lista."));
+    input -= 1;
+    valid = input >= 0 && input < grupos.size();
+  } while (!valid);
+
+  vector<Alumno> alumnos_del_grupo;
+  for (Alumno i : alumnos) {
+    if (i.grupo == input) {
+      alumnos_del_grupo.push_back(i);
+    }
+  }
+
+  if (alumnos_del_grupo.empty()) {
+    cout << "No hay alumnos en ese grupo\n";
+    return;
+  }
+
+  // alocar y tirar un vector en cada nuevo alumno con promedio mas alto, es
+  // menos eficiente que 2 for loops.
+  float mayor_promedio = alumnos_del_grupo[0].promedio;
+  for (Alumno i : alumnos_del_grupo) {
+    if (i.promedio > mayor_promedio) {
+      mayor_promedio = i.promedio;
+    };
+  }
+
+  // Asi mismo alocar 2 vectores es teoreticamente mas eficiente que una
+  // cantidad de vectores entre 1 y alumnos.size().
+  vector<Alumno> nerd_list;
+  for (Alumno i : alumnos_del_grupo) {
+    if (i.promedio == mayor_promedio) {
+      nerd_list.push_back(i);
+    }
+  }
+
+  string msg = "Alumno" + string(nerd_list.size() > 1 ? "" : "s") +
+               " con mayor promedio del grupo: ";
+  imprimir_todos(nerd_list, msg);
 }
 
 // Crea alumno con valores aleatorios.
@@ -49,6 +106,7 @@ Alumno crear_random(vector<Grupo> &grupos) {
     return matricula;
   }();
   fr(i, 3) alumno.calif[i] = ((custom::random_raw_number() % 101) / 10.0);
+  alumno.promedio = custom::promedio(alumno.calif, 3);
   alumno.grupo = custom::random_raw_number() % size(grupos);
   return alumno;
 }
@@ -78,6 +136,7 @@ Alumno capturar(vector<Grupo> &grupos) {
         custom::float_regex, "La calificacion debe ser un numero.\n"));
     alumno.calif[i] = abs(round(x * 10.0) / 10.0);
   }
+  alumno.promedio = custom::promedio(alumno.calif, 3);
   cout << custom::thin_separator << endl;
 
   alumno.grupo = [&](vector<Grupo> grupos) -> int {
@@ -86,13 +145,13 @@ Alumno capturar(vector<Grupo> &grupos) {
     }
 
     cout << "Selecciona el grupo del alumno" << endl;
-    for (int i = 0; i < grupos.size(); i++) {
+    for (size_t i = 0; i < grupos.size(); i++) {
       cout << i + 1 << ") " << grupos[i].nombre << " - " << grupos[i].carrera
            << endl;
     }
 
     bool valid;
-    int indice;
+    size_t indice;
     do {
       indice = stoi(custom::get_regexed_input(
                    "", custom::digit_regex,
