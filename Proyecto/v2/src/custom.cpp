@@ -20,6 +20,7 @@ int random_raw_number() { // reutilizado
   return abs(static_cast<int>(rd()));
 }
 
+// reutilizado y reformateado {
 float promedio(float x[], int size) {
   float suma = 0.0;
   fr(i, size) suma += x[i];
@@ -33,6 +34,7 @@ static const string thick_separator =
     "================================================";
 static const string thin_separator =
     "------------------------------------------------";
+// } // reutilizado y reformateado
 
 // std::regex no soporta Unicode por determinado, itera sobre un
 // string en bytes. El std::string tiene la encodificacion de UTF-8 (mas
@@ -158,7 +160,7 @@ string get_regexed_input(const char *msg, wregex regex, const char *error_msg) {
   return input;
 }
 
-void await_enter() {
+void await_enter() { // reutilizado y reformateado
   cout << "Presiona enter para continuar...";
   getchar();
 }

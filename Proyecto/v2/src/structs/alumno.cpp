@@ -2,11 +2,7 @@
 #include "../structs.cpp"
 #include "grupo.cpp"
 #include <unordered_map>
-#include <vector>
 
-// ##################
-// ##### ALUMNO #####
-// ##################
 namespace alumno {
 // Tenemos que usar structs, pero necesito formato en mis funciones, saber a que
 // pertenecen, organizarlos. Los namespaces replican como lo haria con metodos,
