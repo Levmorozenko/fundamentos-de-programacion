@@ -41,3 +41,8 @@ Alumno crear_alumno() {
 
   return alumno;
 }
+
+void almacenar_alumno_texto(ofstream &file, Alumno &i) {
+  file << i.nombre << "/" << i.matricula << "/" << i.calif[0] << "/"
+       << i.calif[1] << "/" << i.calif[2] << "/" << i.grupo << "\n";
+}

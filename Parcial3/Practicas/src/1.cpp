@@ -24,8 +24,7 @@ int main() {
 
   if (file.is_open()) {
     for (auto i : alumnos) {
-      file << i.nombre << "/" << i.matricula << "/" << i.calif[0] << "/"
-           << i.calif[1] << "/" << i.calif[2] << "/" << i.grupo << "\n";
+      almacenar_alumno_texto(file, i);
     }
     // mejor solucion seria hacerlo in-place, pero la tarea pide un arreglo.
   } else {
