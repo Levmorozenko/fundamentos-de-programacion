@@ -26,9 +26,6 @@ target("4")
 target("4-2")
     add_files("src/4-2.cpp")
 
-target("4-3")
-    add_files("src/4-3.cpp")
-
 target("5")
     add_files("src/5.cpp")
 

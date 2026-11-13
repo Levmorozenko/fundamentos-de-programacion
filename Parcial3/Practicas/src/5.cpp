@@ -4,7 +4,7 @@
 
 #include "custom.cpp"
 
-void do_something_with_file(fstream &file) {}
+void do_something_with_file(fstream &file) {} // funcion cosmetica
 
 int main() {
   fstream file("Archivo_inexistente.txt", ios::in | ios::out);

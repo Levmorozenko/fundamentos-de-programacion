@@ -3,38 +3,22 @@
 
 #include "custom.cpp"
 
-// Porque sin namespaces?
-// Las 6 practicas reusan codigo identico, pensaba en construirlos en hierarquia
-// ascendente, pero se siente como un crimen.
-
 int main() {
   set_utf8();
 
-  // En caso de desear correr las pruebas de 4-3
+  // En caso de desear correr las pruebas de 4-3 cambielo a 1000000.
   int cantidad_de_alumnos = faker::number::integer(4, 8);
-  // int cantidad_de_alumnos = 1000000;
 
-  // creamos el arreglo
   vector<Alumno> alumnos;
-  for (int i = 0; i < cantidad_de_alumnos; i++) {
-    alumnos.push_back(crear_alumno());
-  }
+  fr(i, cantidad_de_alumnos) alumnos.push_back(crear_alumno());
 
-  // y lo mandamos a archivo de texto.
-  // Se re-crea cada ejecucion del 1.cpp, porque no quiero hacer un programa 0
-  // para truncarlo.
-  ofstream file("Alumnos.txt", ios::trunc);
-
-  if (file.is_open()) {
-    for (auto i : alumnos) {
-      almacenar_alumno_texto(file, i);
-    }
-    // mejor solucion seria hacerlo in-place, pero la tarea pide un arreglo.
-  } else {
+  fstream file("Alumnos.txt", ios::out | ios::trunc);
+  if (!file.is_open()) {
     cerr << "El archivo no pudo abrirse.\n";
     return 1;
   }
 
-  file.close();
+  fro(i, alumnos) almacenar_alumno_texto(file, i);
+
   return 0;
 }

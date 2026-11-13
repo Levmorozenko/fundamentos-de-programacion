@@ -4,44 +4,42 @@
 
 #include "custom.cpp"
 
-// Este es el codigo especificamente de la tarea. 4-2 y 4-3 son exploraciones
-// relacionados a misma etapa, pero no a lo requerido.
-
-void almacenar_alumno_bin(ofstream &file, Alumno &i) {
-  // yo presenté esto
-
-  size_t nombre_size = i.nombre.length();
-  file.write(reinterpret_cast<const char *>(&nombre_size), sizeof(nombre_size));
-  file.write(i.nombre.c_str(), nombre_size);
-
-  size_t matricula_size = i.matricula.length();
-  file.write(reinterpret_cast<const char *>(&matricula_size),
-             sizeof(matricula_size));
-  file.write(i.matricula.c_str(), matricula_size);
-
-  // sabemos que el tamaño de int calif[3] y grupo son 12 y 4 bytes
-  // respectivamente.
-  file.write(reinterpret_cast<const char *>(&i.calif), sizeof(i.calif));
-  file.write(reinterpret_cast<const char *>(&i.grupo), sizeof(i.grupo));
-}
-
 int main() {
-  vector<Alumno> alumnos;
-  for (int i = 0; i < 1000000; i++) {
-    alumnos.push_back(crear_alumno());
-  }
+  set_utf8();
 
-  ofstream file("Alumnos.bin", ios::trunc | ios::binary);
-
+  fstream bin_file("Alumnos.bin", ios::out | ios::trunc | ios::binary);
+  fstream file("Alumnos.txt", ios::in);
   if (!file.is_open()) {
     cerr << "El archivo no pudo abrirse.\n";
     return 1;
   }
 
-  for (auto i : alumnos) {
-    almacenar_alumno_bin(file, i);
+  vector<Alumno> alumnos;
+
+  string line;
+  while (getline(file, line)) {
+    if (line.empty())
+      continue;
+    Alumno alumno = parsear_alumno_txt(line);
+    almacenar_alumno_bin(bin_file, alumno);
   }
 
-  file.close();
   return 0;
 }
+
+// Los resultados del tamaño fueron los siguientes:
+// Alumnos.txt: 42,963,542 bytes
+// Alumnos.bin: 58,548,701 bytes
+//
+// sizeof(txt) < sizeof(bin); Deberia ser al reves, no?
+// Pues segun mis calculos, la diferencia es entre los tamaños de strings y char
+// '/' o '\n'.
+// Mi IDE muestra que size_t es unsigned long long, cual es 8 bytes. 2 x 8 = 16
+// bytes de memoria adicional para strings.
+// En caso del texto, un char es exactamente 1 byte. 1 x 6 = 6 bytes
+// adicionales. Entonces, en version binaria guardamos 16 - 6 = 10 mas bytes de
+// memoria para cada struct. Los tamaños no cuadran, porque entre 1 millon de
+// structs, para cada uno hay una diferencia de 58 - 42 = 16 bytes. Sin embargo,
+// no adentraré al tema compilacion, es demasiado amplio y no me interesa.
+//
+// Una teoria que tengo es explorada en 4-2.cpp

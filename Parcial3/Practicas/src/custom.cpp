@@ -17,11 +17,17 @@ static void set_utf8() {
 #include "faker-cxx/person.h"
 #include "faker-cxx/string.h"
 #include <fstream>
+
+#include <iostream>
+#include <string>
 #include <vector>
 
-#include "previous.cpp"
-
+// short version of for -> fr
+#define fr(i, b) for (int i = 0; i < b; i++)
+// short version of "for object" -> fr o -> fro
 #define fro(i, a) for (auto i : a)
+#define thick_separator "================================================\n";
+#define thin_separator "------------------------------------------------\n";
 
 using namespace std;
 
@@ -30,6 +36,7 @@ struct Alumno {
   string matricula;
   float calif[3];
   int grupo;
+  optional<float> promedio;
 };
 
 Alumno crear_alumno() {
@@ -42,7 +49,91 @@ Alumno crear_alumno() {
   return alumno;
 }
 
-void almacenar_alumno_texto(ofstream &file, Alumno &i) {
+void imprimir_alumnos(vector<Alumno> &alumnos) {
+  cout << thick_separator;
+  for (Alumno i : alumnos) {
+    cout << thin_separator;
+
+    cout << "Nombre: " << i.nombre << endl;
+    cout << "Matricula: " << i.matricula << endl;
+    cout << "Calificaciones: " << i.calif[0] << "   " << i.calif[1] << "   "
+         << i.calif[2] << "   " << endl;
+    cout << "ID del grupo: " << i.grupo << endl;
+    if (i.promedio.has_value()) {
+      // por si acaso que me vuelve paranoico falta de .unwrap
+      cout << "Promedio: " << i.promedio.value() << endl;
+    }
+  }
+  cout << thick_separator;
+}
+
+void almacenar_alumno_texto(fstream &file, Alumno &i) {
   file << i.nombre << "/" << i.matricula << "/" << i.calif[0] << "/"
        << i.calif[1] << "/" << i.calif[2] << "/" << i.grupo << "\n";
+}
+
+Alumno parsear_alumno_txt(string &line) {
+  vector<string> parts;
+  size_t start = 0;
+  while (true) {
+    size_t end = line.find('/', start);
+    parts.push_back(line.substr(start, end - start));
+    if (end == string::npos)
+      break;
+    start = end + 1;
+  }
+  Alumno alumno;
+  alumno.nombre = parts[0];
+  alumno.matricula = parts[1];
+  alumno.calif[0] = stof(parts[2]);
+  alumno.calif[1] = stof(parts[3]);
+  alumno.calif[2] = stof(parts[4]);
+  alumno.grupo = stoi(parts[5]);
+
+  return alumno;
+}
+
+void almacenar_alumno_bin(fstream &file, Alumno &i) {
+  // yo presenté esto
+
+  size_t nombre_size = i.nombre.length();
+  file.write(reinterpret_cast<const char *>(&nombre_size), sizeof(nombre_size));
+  file.write(i.nombre.c_str(), nombre_size);
+
+  size_t matricula_size = i.matricula.length();
+  file.write(reinterpret_cast<const char *>(&matricula_size),
+             sizeof(matricula_size));
+  file.write(i.matricula.c_str(), matricula_size);
+
+  // sabemos que el tamaño de int calif[3] y grupo son 12 y 4 bytes
+  // respectivamente.
+  file.write(reinterpret_cast<const char *>(&i.calif), sizeof(i.calif));
+  file.write(reinterpret_cast<const char *>(&i.grupo), sizeof(i.grupo));
+}
+
+Alumno leer_alumno_bin(fstream &file) {
+  // bendiciones a https://www.geeksforgeeks.org/cpp/file-handling-c-classes/
+  Alumno alumno;
+
+  size_t nombre_size;
+  file.read(reinterpret_cast<char *>(&nombre_size), sizeof(nombre_size));
+  char *name_buffer = new char[nombre_size + 1];
+  file.read(name_buffer, nombre_size);
+  name_buffer[nombre_size] = '\0';
+  alumno.nombre = name_buffer;
+
+  size_t matricula_size;
+  file.read(reinterpret_cast<char *>(&matricula_size), sizeof(matricula_size));
+  char *matricula_buffer = new char[matricula_size + 1];
+  file.read(matricula_buffer, matricula_size);
+  matricula_buffer[matricula_size] = '\0';
+  alumno.matricula = matricula_buffer;
+
+  file.read(reinterpret_cast<char *>(&alumno.calif), sizeof(alumno.calif));
+  file.read(reinterpret_cast<char *>(&alumno.grupo), sizeof(alumno.grupo));
+
+  delete[] name_buffer;
+  delete[] matricula_buffer;
+
+  return alumno;
 }

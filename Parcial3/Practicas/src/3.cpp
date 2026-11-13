@@ -4,8 +4,7 @@
 #include "custom.cpp"
 
 int main() {
-  ofstream file("Alumnos.txt", ios::app);
-
+  fstream file("Alumnos.txt", ios::out | ios::app);
   if (!file.is_open()) {
     cerr << "El archivo no pudo abrirse.\n";
     return 1;
@@ -14,6 +13,5 @@ int main() {
   Alumno alumno = crear_alumno();
   almacenar_alumno_texto(file, alumno);
 
-  file.close();
   return 0;
 }
