@@ -9,6 +9,8 @@
 // ascendente, pero se siente como un crimen.
 
 int main() {
+  set_utf8();
+
   // creamos el arreglo
   vector<Alumno> alumnos;
   for (int i = 0; i < faker::number::integer(4, 8); i++) {
@@ -22,8 +24,6 @@ int main() {
 
   if (file.is_open()) {
     for (auto i : alumnos) {
-      replace(i.nombre.begin(), i.nombre.end(), ' ',
-              '_'); // hmm porque haria esto...
       file << i.nombre << "/" << i.matricula << "/" << i.calif[0] << "/"
            << i.calif[1] << "/" << i.calif[2] << "/" << i.grupo << "\n";
     }

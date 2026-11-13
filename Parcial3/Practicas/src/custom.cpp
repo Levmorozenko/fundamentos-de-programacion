@@ -1,3 +1,18 @@
+// Este pequeño codigo hecho por Opencode repara los problemas con imprime de
+// los acentos. Es decir, mi conclusion de la exploracion de UTF-8 y C++ ha sido
+// correcta - no es culpa de ninguno mencionado, es el maldito Windows.
+#ifdef _WIN32
+#define NOMINMAX
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#endif
+static void set_utf8() {
+#ifdef _WIN32
+  SetConsoleOutputCP(CP_UTF8); // cout
+  SetConsoleCP(CP_UTF8);       // getline
+#endif
+}
+
 #include "faker-cxx/number.h"
 #include "faker-cxx/person.h"
 #include "faker-cxx/string.h"
