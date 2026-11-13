@@ -4,4 +4,17 @@
 
 #include "custom.cpp"
 
-int main() {}
+void do_something_with_file(fstream &file) {}
+
+int main() {
+  fstream file("Archivo_inexistente.txt", ios::in | ios::out);
+
+  if (!file.is_open()) {
+    cout << "The input file does not exist. Please create it first\n";
+    return 0;
+  }
+
+  do_something_with_file(file);
+
+  return 0;
+}

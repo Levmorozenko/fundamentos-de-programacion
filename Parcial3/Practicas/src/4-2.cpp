@@ -17,7 +17,6 @@
 // Una teoria que tengo puede ser explorada en 4-3.cpp
 
 #include "custom.cpp"
-#include <fstream>
 
 void almacenar_alumno_bin(ofstream &file, Alumno &i) {
   // yo presenté esto

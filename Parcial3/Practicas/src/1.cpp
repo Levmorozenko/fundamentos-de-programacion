@@ -2,8 +2,6 @@
 // Parcial en un archivo de texto, un alumno por línea.
 
 #include "custom.cpp"
-#include "faker-cxx/number.h"
-#include <algorithm>
 
 // Porque sin namespaces?
 // Las 6 practicas reusan codigo identico, pensaba en construirlos en hierarquia

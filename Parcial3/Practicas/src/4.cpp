@@ -3,7 +3,6 @@
 // distintos.
 
 #include "custom.cpp"
-#include <fstream>
 
 // Este es el codigo especificamente de la tarea. 4-2 y 4-3 son exploraciones
 // relacionados a misma etapa, pero no a lo requerido.
