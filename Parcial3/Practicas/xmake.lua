@@ -7,35 +7,36 @@ system = false,
 
 -- hecho manual porque tengo 0 interes en crear un launcher.
 
+
+set_kind("binary")
+add_packages("faker-cxx")
+
 target("1")
-    set_kind("binary")
     add_files("src/1.cpp")
-    add_packages("faker-cxx")
 
 target("2")
-    set_kind("binary")
     add_files("src/2.cpp")
-    add_packages("faker-cxx")
 
 target("3")
-    set_kind("binary")
     add_files("src/3.cpp")
-    add_packages("faker-cxx")
 
 target("4")
-    set_kind("binary")
     add_files("src/4.cpp")
-    add_packages("faker-cxx")
+
+target("4-2")
+    add_files("src/4-2.cpp")
+
+target("4-3")
+    add_files("src/4-3.cpp")
 
 target("5")
-    set_kind("binary")
     add_files("src/5.cpp")
-    add_packages("faker-cxx")
 
 target("6")
-    set_kind("binary")
     add_files("src/6.cpp")
-    add_packages("faker-cxx")
+
+
+
 --
 -- If you want to known more usage about xmake, please see https://xmake.io
 --

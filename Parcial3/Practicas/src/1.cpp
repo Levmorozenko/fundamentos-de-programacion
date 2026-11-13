@@ -2,6 +2,7 @@
 // Parcial en un archivo de texto, un alumno por línea.
 
 #include "custom.cpp"
+#include "faker-cxx/number.h"
 #include <algorithm>
 
 // Porque sin namespaces?
@@ -11,9 +12,13 @@
 int main() {
   set_utf8();
 
+  // En caso de desear correr las pruebas de 4-3
+  int cantidad_de_alumnos = faker::number::integer(4, 8);
+  // int cantidad_de_alumnos = 1000000;
+
   // creamos el arreglo
   vector<Alumno> alumnos;
-  for (int i = 0; i < faker::number::integer(4, 8); i++) {
+  for (int i = 0; i < cantidad_de_alumnos; i++) {
     alumnos.push_back(crear_alumno());
   }
 
