@@ -11,7 +11,8 @@ int main() {
 
   if (!file.is_open()) {
     cout << "The input file does not exist. Please create it first\n";
-    return 0;
+    file.close();
+    exit(1);
   }
 
   do_something_with_file(file);

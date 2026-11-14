@@ -13,7 +13,8 @@ int main() {
   fstream file("Alumnos.txt", ios::in);
   if (!file.is_open()) {
     cerr << "El archivo no pudo abrirse.\n";
-    return 1;
+    file.close();
+    exit(1);
   }
 
   vector<Alumno> alumnos;

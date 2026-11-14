@@ -18,7 +18,9 @@ static void set_utf8() {
 #include "faker-cxx/string.h"
 #include <fstream>
 
+#include <cmath>
 #include <iostream>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -49,30 +51,30 @@ Alumno crear_alumno() {
   return alumno;
 }
 
-void imprimir_alumnos(vector<Alumno> &alumnos) {
+void imprimir_alumnos(const vector<Alumno> &alumnos) {
   cout << thick_separator;
   for (Alumno i : alumnos) {
     cout << thin_separator;
 
-    cout << "Nombre: " << i.nombre << endl;
-    cout << "Matricula: " << i.matricula << endl;
+    cout << "Nombre: " << i.nombre << "\n";
+    cout << "Matricula: " << i.matricula << "\n";
     cout << "Calificaciones: " << i.calif[0] << "   " << i.calif[1] << "   "
-         << i.calif[2] << "   " << endl;
-    cout << "ID del grupo: " << i.grupo << endl;
+         << i.calif[2] << "   " << "\n";
+    cout << "ID del grupo: " << i.grupo << "\n";
     if (i.promedio.has_value()) {
       // por si acaso que me vuelve paranoico falta de .unwrap
-      cout << "Promedio: " << i.promedio.value() << endl;
+      cout << "Promedio: " << i.promedio.value() << "\n";
     }
   }
   cout << thick_separator;
 }
 
-void almacenar_alumno_texto(fstream &file, Alumno &i) {
+void almacenar_alumno_texto(fstream &file, const Alumno &i) {
   file << i.nombre << "/" << i.matricula << "/" << i.calif[0] << "/"
        << i.calif[1] << "/" << i.calif[2] << "/" << i.grupo << "\n";
 }
 
-Alumno parsear_alumno_txt(string &line) {
+Alumno parsear_alumno_txt(const string &line) {
   vector<string> parts;
   size_t start = 0;
   while (true) {
@@ -93,7 +95,7 @@ Alumno parsear_alumno_txt(string &line) {
   return alumno;
 }
 
-void almacenar_alumno_bin(fstream &file, Alumno &i) {
+void almacenar_alumno_bin(fstream &file, const Alumno &i) {
   // yo presenté esto
 
   size_t nombre_size = i.nombre.length();
@@ -105,7 +107,7 @@ void almacenar_alumno_bin(fstream &file, Alumno &i) {
              sizeof(matricula_size));
   file.write(i.matricula.c_str(), matricula_size);
 
-  // sabemos que el tamaño de int calif[3] y grupo son 12 y 4 bytes
+  // sabemos que el tamaño de calif[3] y grupo son 12 y 4 bytes
   // respectivamente.
   file.write(reinterpret_cast<const char *>(&i.calif), sizeof(i.calif));
   file.write(reinterpret_cast<const char *>(&i.grupo), sizeof(i.grupo));

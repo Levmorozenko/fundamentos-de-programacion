@@ -5,6 +5,7 @@
 // Esta practica depende en archivo binario generado por 4.cpp.
 
 #include "custom.cpp"
+#include <algorithm>
 
 int main() {
   set_utf8();
@@ -12,7 +13,8 @@ int main() {
   fstream file("Alumnos.bin", ios::in | ios::binary);
   if (!file.is_open()) {
     cerr << "El archivo no pudo abrirse.\n";
-    return 1;
+    file.close();
+    exit(1);
   }
 
   // mientras hay menos de 141,000,000 structs a la vez (8gb de ram), estamos
@@ -28,7 +30,7 @@ int main() {
   }
 
   sort(alumnos.begin(), alumnos.end(),
-       [](Alumno &a, Alumno &b) -> bool { return a.promedio < b.promedio; });
+       [](Alumno &a, Alumno &b) -> bool { return a.promedio > b.promedio; });
 
   imprimir_alumnos(alumnos);
 
