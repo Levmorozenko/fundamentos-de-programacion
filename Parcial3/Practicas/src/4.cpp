@@ -3,6 +3,7 @@
 // distintos.
 
 #include "custom.cpp"
+#include <filesystem>
 
 int main() {
   set_utf8();
@@ -23,6 +24,12 @@ int main() {
     Alumno alumno = parsear_alumno_txt(line);
     almacenar_alumno_bin(bin_file, alumno);
   }
+
+  bin_file.close(); // por si acaso
+  cout << "Alumnos.txt tiene el tamaño: "
+       << filesystem::file_size("Alumnos.txt") << " bytes\n";
+  cout << "Se generó Alumnos.bin con tamaño de: "
+       << filesystem::file_size("Alumnos.bin") << " bytes\n";
 
   return 0;
 }
