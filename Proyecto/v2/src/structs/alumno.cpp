@@ -198,7 +198,8 @@ Alumno capturar(vector<Grupo> &grupos) {
     // std::string.c_str() = const char *, lo que espera la funcion.
     float x = stof(custom::get_regexed_input(
         ("Entra la calificacion " + to_string(i + 1) + " del alumno: ").c_str(),
-        custom::float_regex, "La calificacion debe ser un numero.\n"));
+        custom::float_regex,
+        "La calificacion debe ser un numero o exceder 4294967296.\n"));
     alumno.calif[i] = abs(round(x * 10.0) / 10.0);
   }
   alumno.promedio = custom::promedio(alumno.calif, 3);

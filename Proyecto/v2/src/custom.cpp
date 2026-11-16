@@ -4,6 +4,19 @@
 #ifndef CUSTOM_CPP
 #define CUSTOM_CPP
 
+// repara acentos en el terminal de windows.
+#ifdef _WIN32
+#define NOMINMAX
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#endif
+static void set_utf8() {
+#ifdef _WIN32
+  SetConsoleOutputCP(CP_UTF8); // cout
+  SetConsoleCP(CP_UTF8);       // getline
+#endif
+}
+
 #include <cstdlib>
 #include <iostream>
 #include <random>
@@ -120,8 +133,12 @@ static const string thin_separator =
 //
 // Los siguientes regexes son funcionales:
 static const wregex name_regex(L"^[\\x20-\\x3E\\x40-\\x7E\\xC0-\\xFF]+$");
-static const wregex digit_regex(L"[0-9]+");
-static const wregex float_regex(L"\\d+(\\.\\d+)?");
+// Para los numeros, el tamaño de int y float es de 4 bytes. Debido a las
+// limitaciones del diseño del programa (incluyendo stoi y stof), la entrada no
+// deberia contener mas de "4294967296".length() caracteres, lo cual es 10.
+// Seria limitado a nueve para evitar los errores de stoi y stof.
+static const wregex digit_regex(L"^[0-9]{1,9}$");
+static const wregex float_regex(L"^(?=.{1,9}$)\\d+(\\.\\d+)?$");
 
 // Nota sobre const y static:
 //		`static` means that object is initialized
@@ -142,9 +159,13 @@ string get_regexed_input(const char *msg, wregex regex, const char *error_msg) {
     cout << msg << endl;
     getline(wcin, winput);
     if (!winput.empty()) {
-      winput = trim(winput);
+      try {
+        winput = trim(winput);
+        valid = regex_match(winput, regex) && winput.length() > 0;
+      } catch (...) {
+        valid = false;
+      }
     }
-    valid = regex_match(winput, regex) && winput.length() > 0;
 
     if (!valid) {
       cout << error_msg << endl;
