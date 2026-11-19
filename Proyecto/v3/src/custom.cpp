@@ -20,7 +20,6 @@ static void set_utf8() {
 #include <regex>
 #include <string>
 
-
 using namespace std;
 #define fr(i, b) for (int i = 0; i < b; i++)
 #define fro(i, a) for (auto i : a)
@@ -28,6 +27,11 @@ using namespace std;
 #define thin_separator "------------------------------------------------"
 
 static void clear_terminal() { system("cls"); };
+
+int random_raw_number() { // reutilizado
+  random_device rd;
+  return abs(static_cast<int>(rd()));
+}
 
 // If It Works, Don't Touch It
 static const wregex name_regex(L"^[\\x20-\\x3E\\x40-\\x7E\\xC0-\\xFF]+$");

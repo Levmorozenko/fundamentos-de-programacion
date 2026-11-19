@@ -23,10 +23,29 @@ void imprimir_todos(vector<Maestro> &maestros) {
 
 Maestro crear_random() {
   Maestro maestro;
-  maestro.nombre = faker::person::fullName(faker::Locale::es_MX);
+  maestro.nombre = []() {
+    string x;
+    static const string nombres[5] = {
+        "Juan", "Pablo", "Lalo", "Jose", "Jorge",
+    };
+    x.append(nombres[random_raw_number() % size(nombres)]);
+    x.append(" ");
 
-  // idealmente seria id del grupo a cual enseña
-  maestro.materia = faker::education::field();
+    static const string apellidos[6] = {
+        "Hernandez", "Castillo", "Guzman", "Perez", "Rodriguez", "Sanchez",
+    };
+    x.append(apellidos[random_raw_number() % size(apellidos)]);
+
+    return x;
+  }();
+
+  maestro.materia = []() {
+    static const string x[7] = {"Ing. de Software",  "Ing. en Mecatronica",
+                                "Ing. Industrial",   "Administracion",
+                                "Cirujano cerebral", "Ing. Civil",
+                                "Dentista"};
+    return x[random_raw_number() % size(x)];
+  }();
 
   return maestro;
 }

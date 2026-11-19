@@ -138,11 +138,21 @@ void imprimir_cantidad_de_alumnos_por_carrera(vector<Grupo> &grupos,
 
 Alumno crear_random(vector<Grupo> &grupos) {
   Alumno alumno;
-  alumno.nombre = faker::person::fullName(faker::Locale::es_MX);
-  alumno.matricula = faker::string::numeric(10);
-  fr(i, 3) alumno.calif[i] = round(faker::number::decimal(10.0) * 10.0) / 10.0;
-  alumno.grupo = faker::number::integer(0, static_cast<int>(grupos.size()));
-
+  const static string nombres[10] = {
+      "nombre0", "nombre1", "nombre2", "nombre3", "nombre4",
+      "nombre5", "nombre6", "nombre7", "nombre8", "nombre9",
+  };
+  alumno.nombre = nombres[random_raw_number() % (size(nombres))];
+  alumno.matricula = []() -> string {
+    string matricula;
+    for (int i = 0; i < 9; i++) {
+      matricula.append(to_string(random_raw_number() % 10));
+    }
+    return matricula;
+  }();
+  fr(i, 3) alumno.calif[i] = ((random_raw_number() % 101) / 10.0);
+  alumno.promedio = promedio(alumno.calif, 3);
+  alumno.grupo = random_raw_number() % size(grupos);
   return alumno;
 }
 

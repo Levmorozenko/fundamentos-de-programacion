@@ -24,8 +24,26 @@ void imprimir_todos(vector<Grupo> &grupos) {
 
 Grupo crear_random() {
   Grupo grupo;
-  grupo.carrera = faker::education::field();
-  grupo.nombre = faker::education::courses();
+  grupo.carrera = []() {
+    static const string x[7] = {"Ing. de Software",  "Ing. en Mecatronica",
+                                "Ing. Industrial",   "Administracion",
+                                "Cirujano cerebral", "Ing. Civil",
+                                "Dentista"};
+    return x[random_raw_number() % size(x)];
+  }();
+
+  grupo.nombre = []() {
+    static const string x[6] = {
+        "Los regulares",
+        "Los electrodomesticos",
+        "Los brillantes y filosos",
+        "Los administrados",
+        "Los buhos",
+        "Las ranas electricas",
+    };
+    return x[random_raw_number() % size(x)];
+  }();
+
   return grupo;
 }
 
