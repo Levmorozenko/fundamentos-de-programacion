@@ -1,8 +1,12 @@
 add_rules("mode.debug", "mode.release")
 set_languages("c++23")
 
+add_requires("faker-cxx")
+
+
 target("main")
     set_kind("binary")
+    add_packages("faker-cxx")
     add_files("src/main.cpp")
 
 --
