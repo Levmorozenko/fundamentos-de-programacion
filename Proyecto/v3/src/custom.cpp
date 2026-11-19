@@ -21,12 +21,20 @@ static void set_utf8() {
 #include <string>
 
 using namespace std;
-#define fr(i, b) for (int i = 0; i < b; i++)
-#define fro(i, a) for (auto i : a)
+// Meet the FoR macro family
+#define fr(i, b) for (int i = 0; i < b; i++) // short FoR -> FR
+#define fro(i, a) for (auto i : a)           // FoR Object -> FRO
+#define fror(i, a) for (const auto &i : a)   // FoR Object by Reference -> FROR
 #define thick_separator "================================================"
 #define thin_separator "------------------------------------------------"
 
 static void clear_terminal() { system("cls"); };
+
+float promedio(float x[], int size) {
+  float suma = 0.0;
+  fr(i, size) suma += x[i];
+  return round(suma / static_cast<float>(size) * 10.0f) / 10.0f;
+}
 
 int random_raw_number() { // reutilizado
   random_device rd;

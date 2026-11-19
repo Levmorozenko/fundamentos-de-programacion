@@ -12,21 +12,19 @@ Maestro leer_maestro(fstream &file) {
   return maestro;
 }
 
-void escribir_maestros(fstream &file, const vector<Maestro> &v) {
-  size_t n = v.size();
+void escribir_maestros(fstream &file, const vector<Maestro> &maestros) {
+  size_t n = maestros.size();
   file.write(reinterpret_cast<const char *>(&n), sizeof(n));
-  for (const Maestro &m : v)
-    escribir_maestro(file, m);
+  fror(maestro, maestros) escribir_maestro(file, maestro);
 }
 
 vector<Maestro> leer_maestros(fstream &file) {
   size_t n = 0;
   file.read(reinterpret_cast<char *>(&n), sizeof(n));
-  vector<Maestro> v;
+  vector<Maestro> maestros;
   if (!file)
-    return v;
-  v.reserve(n);
-  for (size_t i = 0; i < n; i++)
-    v.push_back(leer_maestro(file));
-  return v;
+    return maestros;
+  maestros.reserve(n);
+  fr(i, n) maestros.push_back(leer_maestro(file));
+  return maestros;
 }

@@ -3,11 +3,6 @@
 #include "grupo.cpp"
 
 namespace alumno {
-float promedio(float x[], int size) {
-  float suma = 0.0;
-  fr(i, size) suma += x[i];
-  return round(suma / static_cast<float>(size) * 10.0f) / 10.0f;
-}
 
 void imprimir(Alumno &alumno) {
   cout << "Nombre:         " << alumno.nombre << endl;
