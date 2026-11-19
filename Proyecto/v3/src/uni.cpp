@@ -34,8 +34,8 @@ struct Career {
 
   vector<Group> groups; // es propetario de grupos
 
-  bool get();
-  bool get_random();
+  Career get();
+  Career get_random();
   void print();
 };
 
@@ -48,8 +48,8 @@ struct Student {
   int careerId; // y la carrera
 
   float average() { return (grades[0] + grades[1] + grades[2]) / 3.0f; }
-  bool get();
-  bool get_random();
+  Student get();
+  Student get_random();
   void print();
 };
 
@@ -59,8 +59,8 @@ struct Teacher {
   int groupId;  // referencia el grupo
   int careerId; // y la carrera
 
-  bool get();
-  bool get_random();
+  Teacher get();
+  Teacher get_random();
   void print();
 };
 
