@@ -3,10 +3,6 @@
 #include "grupo.cpp"
 
 namespace alumno {
-// Tenemos que usar structs, pero necesito formato en mis funciones, saber a que
-// pertenecen, organizarlos. Los namespaces replican como lo haria con metodos,
-// sin embargo cumplen con requisitos de la tarea.
-
 float promedio(float x[], int size) {
   float suma = 0.0;
   fr(i, size) suma += x[i];
@@ -25,14 +21,14 @@ void imprimir(Alumno &alumno) {
 
 void imprimir_todos(vector<Alumno> &alumnos, string msg = "Alumnos: ") {
   clear_terminal();
-  cout << thick_separator << endl;
+  cout << thick_separator;
   cout << msg << endl;
 
   for (Alumno i : alumnos) {
-    cout << thin_separator << endl;
+    cout << thin_separator;
     imprimir(i);
   }
-  cout << thin_separator << endl;
+  cout << thin_separator;
 
   await_enter();
 }
@@ -40,7 +36,7 @@ void imprimir_todos(vector<Alumno> &alumnos, string msg = "Alumnos: ") {
 void imprimir_alumno_con_mayor_promedio_del_grupo(vector<Grupo> &grupos,
                                                   vector<Alumno> &alumnos) {
   clear_terminal();
-  cout << thick_separator << endl;
+  cout << thick_separator;
   cout << "Grupos registrados: " << endl;
   for (size_t i = 0; i < grupos.size(); i++) {
     cout << i + 1 << ") " << grupos[i].nombre << " - " << grupos[i].carrera
@@ -69,8 +65,6 @@ void imprimir_alumno_con_mayor_promedio_del_grupo(vector<Grupo> &grupos,
     return;
   }
 
-  // alocar y tirar un vector en cada nuevo alumno con promedio mas alto, es
-  // menos eficiente que 2 for loops.
   float mayor_promedio = alumnos_del_grupo[0].promedio;
   for (Alumno i : alumnos_del_grupo) {
     if (i.promedio > mayor_promedio) {
@@ -78,8 +72,6 @@ void imprimir_alumno_con_mayor_promedio_del_grupo(vector<Grupo> &grupos,
     };
   }
 
-  // Asi mismo alocar 2 vectores es teoreticamente mas eficiente que una
-  // cantidad de vectores entre 1 y alumnos.size().
   vector<Alumno> nerd_list;
   for (Alumno i : alumnos_del_grupo) {
     if (i.promedio == mayor_promedio) {
@@ -92,34 +84,22 @@ void imprimir_alumno_con_mayor_promedio_del_grupo(vector<Grupo> &grupos,
   imprimir_todos(nerd_list, msg);
 }
 
-// podria ser utilizado mejor, pero es funcional, y es lo mas importante.
 void imprimir_cantidad_de_alumnos_por_carrera(vector<Grupo> &grupos,
                                               vector<Alumno> &alumnos) {
   clear_terminal();
-  cout << thick_separator << endl;
+  cout << thick_separator;
   cout << "Carreras registradas: " << endl;
 
-  // map<carrera, lista_de_indices_de(grupos)>
   unordered_map<string, vector<int>> carreras;
   for (int i = 0; i < grupos.size(); i++) {
-    // Porque algunas cosas tienen un monton de comportamiento pre-determinado,
-    // pero tantas cosas obvias y faciles de plano no existen? Es mejor tener
-    // esto pero no tener std::string::trim()? Dos archivos no pueden importar
-    // el mismo archivo con mismas definicion o el preprocesador se te explota?
-    // No tener scopes faciles con {... return x;}? Pero hashmap te hace todo el
-    // trabajo en lookup/edit por ti. Cada vez aprendo mas razones por cual los
-    // puristas de c++ estan incorrectos.
     carreras[grupos[i].carrera].push_back(i);
   }
 
   int counter = 1;
-  vector<string> carreras_keys; // no encontre una funcion para iterar sobre
-                                // cada clave, asi que lo hago manualmente.
+  vector<string> carreras_keys;
   for (auto [claves, indices] : carreras) {
     cout << counter << ") " << claves << " - ";
-    for (int n : indices) {
-      cout << grupos[n].nombre << ", ";
-    }
+    fro(n, indices) cout << grupos[n].nombre << ", ";
     cout << endl;
     carreras_keys.push_back(claves);
     counter += 1;
@@ -149,62 +129,47 @@ void imprimir_cantidad_de_alumnos_por_carrera(vector<Grupo> &grupos,
   }
 
   clear_terminal();
-  cout << thick_separator << endl;
+  cout << thick_separator;
   cout << "La carrera " << carrera_elegida << " tiene " << cantidad
        << " alumnos.\n";
-  cout << thick_separator << endl;
+  cout << thick_separator;
   await_enter();
 }
 
-// Crea alumno con valores aleatorios.
 Alumno crear_random(vector<Grupo> &grupos) {
   Alumno alumno;
-  const static string nombres[10] = {
-      "nombre0", "nombre1", "nombre2", "nombre3", "nombre4",
-      "nombre5", "nombre6", "nombre7", "nombre8", "nombre9",
-  };
-  alumno.nombre = nombres[random_raw_number() % (size(nombres))];
-  alumno.matricula = []() -> string {
-    string matricula;
-    for (int i = 0; i < 9; i++) {
-      matricula.append(to_string(random_raw_number() % 10));
-    }
-    return matricula;
-  }();
-  fr(i, 3) alumno.calif[i] = ((random_raw_number() % 101) / 10.0);
-  alumno.promedio = promedio(alumno.calif, 3);
-  alumno.grupo = random_raw_number() % size(grupos);
+  alumno.nombre = faker::person::fullName(faker::Locale::es_MX);
+  alumno.matricula = faker::string::numeric(10);
+  fr(i, 3) alumno.calif[i] = round(faker::number::decimal(10.0) * 10.0) / 10.0;
+  alumno.grupo = faker::number::integer(0, static_cast<int>(grupos.size()));
+
   return alumno;
 }
 
-// Captura el alumno basado en la entrada
 Alumno capturar(vector<Grupo> &grupos) {
   clear_terminal();
-  cout << thick_separator << endl;
+  cout << thick_separator;
   Alumno alumno;
   alumno.nombre = get_regexed_input(
       "Entra el nombre del alumno: ", name_regex,
       "El nombre no puede ser vacio o contener caracteres invalidos.\n"
       "Se permite el uso de letras, numeros y simbolos ASCII\n");
-  cout << thin_separator << endl;
+  cout << thin_separator;
 
   alumno.matricula = get_regexed_input(
       "Entra la matricula del alumno", digit_regex,
       "La matricula solo puede tener numeros, por favor intente de nuevo.\n");
-  cout << thin_separator << endl;
+  cout << thin_separator;
 
-  // hay una mejor manera de hacer esto, lo se, lo siento - pero todavia no se
-  // como...
   for (int i = 0; i < 3; i++) {
-    // std::string.c_str() = const char *, lo que espera la funcion.
     float x = stof(get_regexed_input(
         ("Entra la calificacion " + to_string(i + 1) + " del alumno: ").c_str(),
         float_regex,
         "La calificacion debe ser un numero o exceder 4294967296.\n"));
-    alumno.calif[i] = abs(round(x * 10.0) / 10.0);
+    alumno.calif[i] = round(x * 10.0f) / 10.0f;
   }
   alumno.promedio = promedio(alumno.calif, 3);
-  cout << thin_separator << endl;
+  cout << thin_separator;
 
   alumno.grupo = [&](vector<Grupo> grupos) -> int {
     if (grupos.empty()) {
@@ -232,10 +197,10 @@ Alumno capturar(vector<Grupo> &grupos) {
     return indice;
   }(grupos);
 
-  cout << thick_separator << endl;
+  cout << thick_separator;
   cout << "Alumno registrado!\n";
   imprimir(alumno);
-  cout << thick_separator << endl;
+  cout << thick_separator;
   await_enter();
   return alumno;
 }

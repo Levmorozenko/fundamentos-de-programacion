@@ -14,11 +14,12 @@ static void set_utf8() {
 #endif
 }
 
-#include "faker-cxx"
+#include "faker-cxx/faker.h"
 #include <cstdlib>
 #include <iostream>
 #include <regex>
 #include <string>
+
 
 using namespace std;
 #define fr(i, b) for (int i = 0; i < b; i++)

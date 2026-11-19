@@ -9,43 +9,24 @@ void imprimir(Maestro &maestro) {
 
 void imprimir_todos(vector<Maestro> &maestros) {
   clear_terminal();
-  cout << thick_separator << endl;
+  cout << thick_separator;
   cout << "Maestros: " << endl;
 
   for (Maestro i : maestros) {
-    cout << thin_separator << endl;
+    cout << thin_separator;
     imprimir(i);
   }
-  cout << thin_separator << endl;
+  cout << thin_separator;
 
   await_enter();
 }
 
 Maestro crear_random() {
   Maestro maestro;
-  maestro.nombre = []() {
-    string x;
-    static const string nombres[5] = {
-        "Juan", "Pablo", "Lalo", "Jose", "Jorge",
-    };
-    x.append(nombres[random_raw_number() % size(nombres)]);
-    x.append(" ");
+  maestro.nombre = faker::person::fullName(faker::Locale::es_MX);
 
-    static const string apellidos[6] = {
-        "Hernandez", "Castillo", "Guzman", "Perez", "Rodriguez", "Sanchez",
-    };
-    x.append(apellidos[random_raw_number() % size(apellidos)]);
-
-    return x;
-  }();
-
-  maestro.materia = []() {
-    static const string x[7] = {"Ing. de Software",  "Ing. en Mecatronica",
-                                "Ing. Industrial",   "Administracion",
-                                "Cirujano cerebral", "Ing. Civil",
-                                "Dentista"};
-    return x[random_raw_number() % size(x)];
-  }();
+  // idealmente seria id del grupo a cual enseña
+  maestro.materia = faker::education::field();
 
   return maestro;
 }
@@ -53,22 +34,22 @@ Maestro crear_random() {
 Maestro capturar() {
   Maestro maestro;
   clear_terminal();
-  cout << thick_separator << endl;
+  cout << thick_separator;
   maestro.nombre = get_regexed_input(
       "Entra el nombre del maestro: ", name_regex,
       "Su nombre no puede ser vacio o contener caracteres invalidos.\n"
       "Se permite el uso de letras, numeros y simbolos ASCII\n");
 
-  cout << thick_separator << endl;
+  cout << thick_separator;
   maestro.materia = get_regexed_input(
       "Entra el nombre de la materia que da este maestro: ", name_regex,
       "El nombre no puede ser vacio o contener caracteres invalidos.\n"
       "Se permite el uso de letras, numeros y simbolos ASCII\n");
 
-  cout << thick_separator << endl;
+  cout << thick_separator;
   cout << "Maestro registrado!\n";
   maestro::imprimir(maestro);
-  cout << thick_separator << endl;
+  cout << thick_separator;
   await_enter();
   return maestro;
 }

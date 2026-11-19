@@ -1,8 +1,10 @@
 #include "structs.cpp"
-#include "structs/alumno.cpp" 
+#include "structs/alumno.cpp"
 #include "structs/maestro.cpp"
 
 int main() {
+  set_utf8();
+
   bool modo_aleatorio = false;
 
   vector<Grupo> grupos;
@@ -11,7 +13,7 @@ int main() {
 
   while (true) {
     clear_terminal();
-    cout << thick_separator << endl;
+    cout << thick_separator;
     cout << "Que desee usted hoy del humilde programa?\n";
     cout << "1) Registrar alumno\n";
     cout << "2) Registrar maestro\n";
@@ -25,11 +27,10 @@ int main() {
     cout << "8) Imprimir alumnos de misma carrera\n\n";
 
     cout << "9) Salir del programa\n";
-    cout << thick_separator << endl;
+    cout << thick_separator;
 
-    string input = get_regexed_input(
-        "Seleccione una opcion: ", digit_regex,
-        "Entra un numero por favor.");
+    string input = get_regexed_input("Seleccione una opcion: ", digit_regex,
+                                     "Entra un numero por favor.");
 
     switch (stoi(input)) {
     case 1:

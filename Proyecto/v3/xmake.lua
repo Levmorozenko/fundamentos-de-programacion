@@ -1,7 +1,9 @@
 add_rules("mode.debug", "mode.release")
-set_languages("c++23")
+set_languages("cxx20")
 
-add_requires("faker-cxx")
+add_requires("faker-cxx", {
+system = false,
+   configs = {cxxflags = "-std=c++20"}})
 
 
 target("main")
