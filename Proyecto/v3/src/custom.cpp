@@ -16,6 +16,7 @@ static void set_utf8() {
 
 #include "faker-cxx/faker.h"
 #include <cstdlib>
+#include <fstream>
 #include <iostream>
 #include <regex>
 #include <string>
@@ -25,8 +26,8 @@ using namespace std;
 #define fr(i, b) for (int i = 0; i < b; i++) // short FoR -> FR
 #define fro(i, a) for (auto i : a)           // FoR Object -> FRO
 #define fror(i, a) for (const auto &i : a)   // FoR Object by Reference -> FROR
-#define thick_separator "================================================"
-#define thin_separator "------------------------------------------------"
+#define thick_separator "================================================\n"
+#define thin_separator "------------------------------------------------\n"
 
 static void clear_terminal() { system("cls"); };
 
@@ -42,28 +43,29 @@ int random_raw_number() { // reutilizado
 }
 
 // If It Works, Don't Touch It
-static const wregex name_regex(L"^[\\x20-\\x3E\\x40-\\x7E\\xC0-\\xFF]+$");
-static const wregex digit_regex(L"^[0-9]{1,9}$");
-static const wregex float_regex(L"^(?=.{1,9}$)\\d+(\\.\\d+)?$");
+static const regex name_regex("^[\\x20-\\x3E\\x40-\\x7E\\xC0-\\xFF]+$");
+static const regex ascii_regex("(^(?=.*[^\\s])[\\x00-\\x7F]+$)");
+static const regex digit_regex("^[0-9]{1,9}$");
+static const regex float_regex("^(?=.{1,9}$)\\d+(\\.\\d+)?$");
 
-wstring trim(wstring str) {
-  auto start = str.find_first_not_of(L" ");
-  auto end = str.find_last_not_of(L" ");
+string trim(string str) {
+  auto start = str.find_first_not_of(" ");
+  auto end = str.find_last_not_of(" ");
   str = str.substr(start, end - start + 1);
   return str;
 }
 
-string get_regexed_input(const char *msg, wregex regex, const char *error_msg) {
-  wstring winput;
+string get_regexed_input(const char *msg, regex regex, const char *error_msg) {
+  string input;
   bool valid;
 
   do {
     cout << msg << endl;
-    getline(wcin, winput);
-    if (!winput.empty()) {
+    getline(cin, input);
+    if (!input.empty()) {
       try {
-        winput = trim(winput);
-        valid = regex_match(winput, regex) && winput.length() > 0;
+        input = trim(input);
+        valid = regex_match(input, regex) && input.length() > 0;
       } catch (...) {
         valid = false;
       }
@@ -74,10 +76,6 @@ string get_regexed_input(const char *msg, wregex regex, const char *error_msg) {
     }
   } while (!valid);
   cout << "\n";
-
-  string input(winput.length(), 0);
-  transform(winput.begin(), winput.end(), input.begin(),
-            [](wchar_t c) { return (char)c; });
 
   return input;
 }

@@ -11,7 +11,7 @@ void imprimir(Alumno &alumno) {
   fr(i, 3) cout << alumno.calif[i] << ", ";
   cout << endl;
   cout << "Promedio:       " << promedio(alumno.calif, 3) << endl;
-  cout << "Grupo:          " << alumno.grupo + 1 << endl;
+  cout << "Grupo №:        " << alumno.grupo + 1 << endl;
 }
 
 void imprimir_todos(vector<Alumno> &alumnos, string msg = "Alumnos: ") {
