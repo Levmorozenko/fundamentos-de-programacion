@@ -44,13 +44,16 @@ int random_raw_number() { // reutilizado
 
 // If It Works, Don't Touch It
 static const regex name_regex("^[\\x20-\\x3E\\x40-\\x7E\\xC0-\\xFF]+$");
-static const regex ascii_regex("(^(?=.*[^\\s])[\\x00-\\x7F]+$)");
+static const regex filename_regex(R"(^[^<>:"/\\|?*\x00-\x1F]+$)");
 static const regex digit_regex("^[0-9]{1,9}$");
 static const regex float_regex("^(?=.{1,9}$)\\d+(\\.\\d+)?$");
+static const regex confirm_regex("^[sSyYnN]$");
 
 string trim(string str) {
   auto start = str.find_first_not_of(" ");
   auto end = str.find_last_not_of(" ");
+  if (start == string::npos)
+    return "";
   str = str.substr(start, end - start + 1);
   return str;
 }
@@ -82,7 +85,8 @@ string get_regexed_input(const char *msg, regex regex, const char *error_msg) {
 
 void await_enter() {
   cout << "Presiona enter para continuar...";
-  getchar();
+  string null_str;
+  getline(cin, null_str);
 }
 
 #endif

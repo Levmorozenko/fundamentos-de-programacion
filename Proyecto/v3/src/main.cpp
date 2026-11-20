@@ -18,7 +18,7 @@ int main() {
 
   clear_terminal();
   cout << thick_separator;
-  string path = pick_file("datos.bin");
+  string path = pick_file();
   cout << "Cargando el archivo " << path << "...\n";
   bool is_file_loaded = load_file(grupos, alumnos, maestros, path);
   if (is_file_loaded) {
@@ -142,9 +142,13 @@ int main() {
     case 10: // salir sin guardar
       if (!is_program_saved) {
         string emergency_input = get_regexed_input(
-            "El programa no fue guardado. Desea guardarlo ahora? (Y/n)\n",
-            name_regex, "");
+            "El programa no fue guardado. Desea guardarlo ahora? (s/n)\n",
+            confirm_regex, "");
+        if (emergency_input != "n" && emergency_input != "N") {
+          handle_user_save(grupos, alumnos, maestros, path);
+        }
       }
+      cout << "Saliendo del programa...\n";
       return 0;
 
     case 67:

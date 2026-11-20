@@ -1,5 +1,6 @@
 #include "../custom.cpp"
 #include "../structs.cpp"
+#include "faker-cxx/company.h"
 
 namespace maestro {
 void imprimir(Maestro &maestro) {
@@ -22,30 +23,8 @@ void imprimir_todos(vector<Maestro> &maestros) {
 
 Maestro crear_random() {
   Maestro maestro;
-  maestro.nombre = []() {
-    string x;
-    static const string nombres[5] = {
-        "Juan", "Pablo", "Lalo", "Jose", "Jorge",
-    };
-    x.append(nombres[random_raw_number() % size(nombres)]);
-    x.append(" ");
-
-    static const string apellidos[6] = {
-        "Hernandez", "Castillo", "Guzman", "Perez", "Rodriguez", "Sanchez",
-    };
-    x.append(apellidos[random_raw_number() % size(apellidos)]);
-
-    return x;
-  }();
-
-  maestro.materia = []() {
-    static const string x[7] = {"Ing. de Software",  "Ing. en Mecatronica",
-                                "Ing. Industrial",   "Administracion",
-                                "Cirujano cerebral", "Ing. Civil",
-                                "Dentista"};
-    return x[random_raw_number() % size(x)];
-  }();
-
+  maestro.nombre = faker::person::fullName(faker::Locale::es_MX);
+  maestro.materia = faker::company::industry();
   return maestro;
 }
 

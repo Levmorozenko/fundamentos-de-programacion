@@ -45,6 +45,8 @@ void imprimir_alumno_con_mayor_promedio_del_grupo(vector<Grupo> &grupos,
                                "Por favor selecciona el grupo de la lista."));
     input -= 1;
     valid = input >= 0 && input < grupos.size();
+    if (!valid)
+      cout << "Por favor selecciona el grupo de la lista.";
   } while (!valid);
 
   vector<Alumno> alumnos_del_grupo;
@@ -56,6 +58,7 @@ void imprimir_alumno_con_mayor_promedio_del_grupo(vector<Grupo> &grupos,
 
   if (alumnos_del_grupo.empty()) {
     cout << "No hay alumnos en ese grupo\n";
+    await_enter();
     return;
   }
 
@@ -73,7 +76,7 @@ void imprimir_alumno_con_mayor_promedio_del_grupo(vector<Grupo> &grupos,
     }
   }
 
-  string msg = "Alumno" + string(nerd_list.size() > 1 ? "" : "s") +
+  string msg = "Alumno" + string(nerd_list.size() > 1 ? "s" : "") +
                " con mayor promedio del grupo: ";
   imprimir_todos(nerd_list, msg);
 }
@@ -131,21 +134,12 @@ void imprimir_cantidad_de_alumnos_por_carrera(vector<Grupo> &grupos,
 
 Alumno crear_random(vector<Grupo> &grupos) {
   Alumno alumno;
-  const static string nombres[10] = {
-      "nombre0", "nombre1", "nombre2", "nombre3", "nombre4",
-      "nombre5", "nombre6", "nombre7", "nombre8", "nombre9",
-  };
-  alumno.nombre = nombres[random_raw_number() % (size(nombres))];
-  alumno.matricula = []() -> string {
-    string matricula;
-    for (int i = 0; i < 9; i++) {
-      matricula.append(to_string(random_raw_number() % 10));
-    }
-    return matricula;
-  }();
-  fr(i, 3) alumno.calif[i] = ((random_raw_number() % 101) / 10.0);
+  alumno.nombre = faker::person::fullName(faker::Locale::es_MX);
+  alumno.matricula = faker::string::numeric(10);
+  fr(i, 3) alumno.calif[i] =
+      round(faker::number::decimal(10.0f) * 10.0f) / 10.0f;
   alumno.promedio = promedio(alumno.calif, 3);
-  alumno.grupo = random_raw_number() % size(grupos);
+  alumno.grupo = faker::number::integer(0, static_cast<int>(grupos.size()));
   return alumno;
 }
 
@@ -167,8 +161,7 @@ Alumno capturar(vector<Grupo> &grupos) {
   for (int i = 0; i < 3; i++) {
     float x = stof(get_regexed_input(
         ("Entra la calificacion " + to_string(i + 1) + " del alumno: ").c_str(),
-        float_regex,
-        "La calificacion debe ser un numero o exceder 4294967296.\n"));
+        float_regex, "Entra una calificacion por favor.\n"));
     alumno.calif[i] = round(x * 10.0f) / 10.0f;
   }
   alumno.promedio = promedio(alumno.calif, 3);

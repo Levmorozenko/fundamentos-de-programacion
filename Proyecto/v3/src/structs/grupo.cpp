@@ -1,5 +1,6 @@
 #include "../custom.cpp"
 #include "../structs.cpp"
+#include "faker-cxx/book.h"
 
 namespace grupo {
 
@@ -23,26 +24,10 @@ void imprimir_todos(vector<Grupo> &grupos) {
 
 Grupo crear_random() {
   Grupo grupo;
-  grupo.carrera = []() {
-    static const string x[7] = {"Ing. de Software",  "Ing. en Mecatronica",
-                                "Ing. Industrial",   "Administracion",
-                                "Cirujano cerebral", "Ing. Civil",
-                                "Dentista"};
-    return x[random_raw_number() % size(x)];
-  }();
-
-  grupo.nombre = []() {
-    static const string x[6] = {
-        "Los regulares",
-        "Los electrodomesticos",
-        "Los brillantes y filosos",
-        "Los administrados",
-        "Los buhos",
-        "Las ranas electricas",
-    };
-    return x[random_raw_number() % size(x)];
-  }();
-
+  grupo.carrera = faker::company::industry();
+  grupo.nombre =
+      faker::book::title(); // pinche biblioteca faker no se compila el modulo
+                            // `education` asi que sera nombre de un libro
   return grupo;
 }
 

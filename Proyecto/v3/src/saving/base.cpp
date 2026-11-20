@@ -20,8 +20,8 @@ string read_string(fstream &file) {
   string str;
   size_t n = 0;
   file.read(reinterpret_cast<char *>(&n), sizeof(n));
-  str.resize(n); // se tiene que alocar espacio, por alguna razon no lo hace
-                 // automaticamente.
+  // se tiene que alocar espacio, por alguna razon no lo hace automaticamente.
+  str.resize(n);
   file.read(str.data(), n);
   return str;
 }
