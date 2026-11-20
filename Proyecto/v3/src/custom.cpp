@@ -57,7 +57,7 @@ string trim(string str) {
 
 string get_regexed_input(const char *msg, regex regex, const char *error_msg) {
   string input;
-  bool valid;
+  bool valid = false;
 
   do {
     cout << msg << endl;

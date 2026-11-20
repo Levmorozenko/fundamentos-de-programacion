@@ -26,7 +26,10 @@ bool load_file(vector<Grupo> &grupos, vector<Alumno> &alumnos,
   if (!file.is_open())
     return false;
 
-  // Dejo este mini crimen porque finalmente se que estoy haciendo.
+  if (file.peek() == char_traits<char>::eof()) { // si el archivo esta vacio
+    return true;
+  }
+
   vector<Grupo> g = leer_grupos(file);
   vector<Alumno> a = leer_alumnos(file);
   vector<Maestro> m = leer_maestros(file);
@@ -56,7 +59,7 @@ bool handle_user_save(const vector<Grupo> &grupos,
   cout << "Guardando...\n";
   success = new bool(save_file(grupos, alumnos, maestros, path));
   if (*success == true) {
-    cout << "Save successful!\n";
+    cout << "Guardado exitosamente!\n";
     delete success;
     await_enter();
     return true;

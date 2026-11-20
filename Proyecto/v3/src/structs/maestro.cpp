@@ -8,7 +8,6 @@ void imprimir(Maestro &maestro) {
 }
 
 void imprimir_todos(vector<Maestro> &maestros) {
-  clear_terminal();
   cout << thick_separator;
   cout << "Maestros: " << endl;
 

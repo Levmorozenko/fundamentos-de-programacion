@@ -15,7 +15,6 @@ void imprimir(Alumno &alumno) {
 }
 
 void imprimir_todos(vector<Alumno> &alumnos, string msg = "Alumnos: ") {
-  clear_terminal();
   cout << thick_separator;
   cout << msg << endl;
 
@@ -94,8 +93,7 @@ void imprimir_cantidad_de_alumnos_por_carrera(vector<Grupo> &grupos,
   vector<string> carreras_keys;
   for (auto [claves, indices] : carreras) {
     cout << counter << ") " << claves << " - ";
-    fro(n, indices) cout << grupos[n].nombre << ", ";
-    cout << endl;
+    fro(n, indices) cout << grupos[n].nombre << endl;
     carreras_keys.push_back(claves);
     counter += 1;
   }
@@ -127,7 +125,7 @@ void imprimir_cantidad_de_alumnos_por_carrera(vector<Grupo> &grupos,
   cout << thick_separator;
   cout << "La carrera " << carrera_elegida << " tiene " << cantidad
        << " alumnos.\n";
-  cout << thick_separator;
+  cout << thin_separator;
   await_enter();
 }
 

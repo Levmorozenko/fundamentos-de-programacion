@@ -22,7 +22,7 @@ int main() {
   cout << "Cargando el archivo " << path << "...\n";
   bool is_file_loaded = load_file(grupos, alumnos, maestros, path);
   if (is_file_loaded) {
-    cout << "El archivo " << path << " was successfully loaded.\n"
+    cout << "El archivo " << path << " fue cargado exitosamente.\n"
          << thin_separator;
     await_enter();
   } else {
@@ -45,7 +45,7 @@ int main() {
     cout << "6) Imprimir todos datos de grupos\n\n";
 
     cout << "7) Imprimir el alumno con promedio mas alto del grupo\n";
-    cout << "8) Imprimir alumnos de misma carrera\n\n";
+    cout << "8) Imprimir cantidad de alumnos por carrera\n\n";
 
     cout << "9) Guardar el estado del programa\n";
     cout << "10) Salir del programa\n";
@@ -89,6 +89,7 @@ int main() {
 
     case 4: // imprimir alumnos
       if (!alumnos.empty()) {
+        clear_terminal();
         alumno::imprimir_todos(alumnos);
       } else {
         cout << "No hay alumnos para imprimir!\n";
@@ -98,6 +99,7 @@ int main() {
 
     case 5: // imprimir maestros
       if (!maestros.empty()) {
+        clear_terminal();
         maestro::imprimir_todos(maestros);
       } else {
         cout << "No hay maestros para imprimir!\n";
@@ -107,6 +109,7 @@ int main() {
 
     case 6: // imprimir grupos
       if (!grupos.empty()) {
+        clear_terminal();
         grupo::imprimir_todos(grupos);
       } else {
         cout << "No hay grupos para imprimir!\n";

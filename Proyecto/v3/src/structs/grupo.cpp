@@ -9,7 +9,6 @@ void imprimir(Grupo &grupo) {
 }
 
 void imprimir_todos(vector<Grupo> &grupos) {
-  clear_terminal();
   cout << thick_separator;
   cout << "Grupos: " << endl;
 

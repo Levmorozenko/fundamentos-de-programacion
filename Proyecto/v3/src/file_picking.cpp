@@ -9,7 +9,7 @@ using namespace std::filesystem;
 
 vector<path> find_files() {
   vector<path> list;
-  for (const auto &item : directory_iterator()) {
+  for (const auto &item : directory_iterator(current_path())) {
     if (!item.is_regular_file())
       continue; // evitamos carpetas, symlinks y otros elementos magicos.
     if (item.path().extension().string() == ".bin")
@@ -23,10 +23,10 @@ string pick_file(const string &fallback = "datos.bin") {
   if (!files.empty()) {
     cout << "Archivos binarios disponibles:\n";
     fr(i, files.size()) cout << i + 1 << ") " << files[i].filename().string()
-                             << "\n\n";
+                             << "\n";
   }
 
-  cout << "0) Crear un archivo nuevo\n";
+  cout << "0) Crear un archivo nuevo\n" << thin_separator;
 
   int choice = stoi(get_regexed_input("Selecciona un archivo: ", digit_regex,
                                       "Entra un numero por favor."));
