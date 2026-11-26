@@ -1,6 +1,9 @@
+#include "../saving/alumno.cpp"
 #include "../custom.cpp"
 #include "../structs.cpp"
 #include "grupo.cpp"
+#include <filesystem>
+#include <vector>
 
 namespace alumno {
 
@@ -139,7 +142,8 @@ Alumno crear_random(vector<Grupo> &grupos) {
   fr(i, 3) alumno.calif[i] =
       round(faker::number::decimal(10.0f) * 10.0f) / 10.0f;
   alumno.promedio = promedio(alumno.calif, 3);
-  alumno.grupo = faker::number::integer(0, static_cast<int>(grupos.size()));
+  alumno.grupo =
+      faker::number::integer(0, (static_cast<int>(grupos.size()) - 1));
   return alumno;
 }
 
@@ -199,6 +203,41 @@ Alumno capturar(vector<Grupo> &grupos) {
   cout << thick_separator;
   await_enter();
   return alumno;
+}
+
+// Alas, 'tis true I have gone here and there.
+void exportar_reporte_de_texto(const vector<Grupo> &grupos,
+                               vector<Alumno> &alumnos, const string path) {
+  // solo puede existir un reporte por archivo binario.
+  // El usuario puede ser Jar Jar Binks y llamar un archivo jar.bin.bin
+  string txt_path = filesystem::path(path).replace_extension(".txt").string();
+
+  fstream report_file(txt_path, ios::out | ios::trunc);
+  if (!report_file.is_open()) {
+    cerr << "No se pudo crear el reporte " << txt_path << ".\n";
+    return;
+  }
+
+  // rip performance, movemos items dentro del vector minimo alumnos.length()
+  // veces. Alternativa es un vector con punteros. Contraargumento: el tiempo
+  // limite.
+  sort(alumnos.begin(), alumnos.end(),
+       [](Alumno &a, Alumno &b) -> bool { return a.promedio > b.promedio; });
+
+  try {
+    report_file << thick_separator;
+    report_file << "REPORTE DE ALUMNOS:\n";
+    for (Alumno i : alumnos) {
+      report_file << thin_separator;
+      escribir_alumno_txt(grupos, i, report_file);
+    }
+    report_file << thick_separator;
+    cout << "El reporte fue generado exitosamente.\n";
+  } catch (...) {
+    cout << "Error en generacion del reporte.\n";
+  }
+
+  await_enter();
 }
 
 } // namespace alumno

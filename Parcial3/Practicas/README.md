@@ -15,14 +15,11 @@ Las practicas del parcial 3 `./Parcial3/Practicas` se compilan con [xmake](https
 
 2) Correr practicas a traves de:
   - Donde x es el numero de la practica:
-  - Archivos compilados: 
+  - **Recomendado:** `xmake run x` 
+  - En otro caso, use archivos compilados. Para windows: 
     ```pwsh 
     cd .\build\windows\x64\release
     .\x.cpp
-    ```
-  - `xmake run`: 
-    ```pwsh 
-    xmake run x
     ```
   *Nota: algunas practicas dependen de archivos generados por otros.*
 
@@ -30,3 +27,5 @@ Las practicas del parcial 3 `./Parcial3/Practicas` se compilan con [xmake](https
 ## Clang compatibility
 Por determinado, clang no detecta las bibliotecas que pertenecen a xmake. Para arreglar eso se debe crear `compile_commands.json` a traves de:
 ```xmake project -k compile_commands```
+
+Ademas, para activar compilacion con clang, use `xmake f --toolchain=clang -c`

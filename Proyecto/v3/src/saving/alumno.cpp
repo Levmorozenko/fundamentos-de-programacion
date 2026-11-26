@@ -1,3 +1,4 @@
+#pragma once
 #include "base.cpp"
 
 // Podria usar un archivo separado para cada vector, pero eso seria impractico.
@@ -42,4 +43,15 @@ vector<Alumno> leer_alumnos(fstream &file) {
                       // llenarlo, para evitar que se mueve vector.size() veces.
   fr(i, n) alumnos.push_back(leer_alumno(file));
   return alumnos;
+}
+
+void escribir_alumno_txt(const vector<Grupo> &grupos, const Alumno &alumno,
+                         fstream &file) {
+  file << "Nombre   : " << alumno.nombre << "\n";
+  file << "Matricula: " << alumno.matricula << "\n";
+  file << "Grupo    : " << grupos[alumno.grupo].nombre << "\n";
+  file << "Promedio : " << alumno.promedio << "\n";
+  file << "Calificaciones: ";
+  fr(i, 3) file << "[ " << alumno.calif[i] << " ] ";
+  file << "\n";
 }

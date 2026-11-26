@@ -48,7 +48,9 @@ int main() {
     cout << "8) Imprimir cantidad de alumnos por carrera\n\n";
 
     cout << "9) Guardar el estado del programa\n";
-    cout << "10) Salir del programa\n";
+    cout
+        << "10) Exportar un reporte de texto: alumnos ordenados por promedio\n";
+    cout << "0) Salir del programa\n";
     cout << thick_separator;
 
     string input = get_regexed_input("Seleccione una opcion: ", digit_regex,
@@ -139,7 +141,16 @@ int main() {
       is_program_saved = handle_user_save(grupos, alumnos, maestros, path);
       break;
 
-    case 10: // salir sin guardar
+    case 10:
+      if (!alumnos.empty()) {
+        alumno::exportar_reporte_de_texto(grupos, alumnos, path);
+      } else {
+        cout << "Se debe registrar minimo un alumno primero.\n";
+        await_enter();
+      }
+      break;
+
+    case 0: // salir sin guardar
       if (!is_program_saved) {
         string emergency_input = get_regexed_input(
             "El programa no fue guardado. Desea guardarlo ahora? (s/n)\n",
