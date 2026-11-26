@@ -31,15 +31,10 @@ using namespace std;
 
 static void clear_terminal() { system("cls"); };
 
-float promedio(float x[], int size) {
+float promedio(const float x[], const int size) {
   float suma = 0.0;
   fr(i, size) suma += x[i];
   return round(suma / static_cast<float>(size) * 10.0f) / 10.0f;
-}
-
-int random_raw_number() { // reutilizado
-  random_device rd;
-  return abs(static_cast<int>(rd()));
 }
 
 // If It Works, Don't Touch It

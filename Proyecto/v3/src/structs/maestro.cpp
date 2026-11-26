@@ -3,12 +3,12 @@
 #include "faker-cxx/company.h"
 
 namespace maestro {
-void imprimir(Maestro &maestro) {
+void imprimir(const Maestro &maestro) {
   cout << "Nombre:  " << maestro.nombre << endl;
   cout << "Materia: " << maestro.materia << endl;
 }
 
-void imprimir_todos(vector<Maestro> &maestros) {
+void imprimir_todos(const vector<Maestro> &maestros) {
   cout << thick_separator;
   cout << "Maestros: " << endl;
 

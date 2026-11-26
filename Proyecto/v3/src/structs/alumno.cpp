@@ -7,7 +7,7 @@
 
 namespace alumno {
 
-void imprimir(Alumno &alumno) {
+void imprimir(const Alumno &alumno) {
   cout << "Nombre:         " << alumno.nombre << endl;
   cout << "Matricula:      " << alumno.matricula << endl;
   cout << "Calificaciones: ";
@@ -17,7 +17,8 @@ void imprimir(Alumno &alumno) {
   cout << "Grupo №:        " << alumno.grupo + 1 << endl;
 }
 
-void imprimir_todos(vector<Alumno> &alumnos, string msg = "Alumnos: ") {
+void imprimir_todos(const vector<Alumno> &alumnos,
+                    const string msg = "Alumnos: ") {
   cout << thick_separator;
   cout << msg << endl;
 
@@ -30,8 +31,8 @@ void imprimir_todos(vector<Alumno> &alumnos, string msg = "Alumnos: ") {
   await_enter();
 }
 
-void imprimir_alumno_con_mayor_promedio_del_grupo(vector<Grupo> &grupos,
-                                                  vector<Alumno> &alumnos) {
+void imprimir_alumno_con_mayor_promedio_del_grupo(
+    const vector<Grupo> &grupos, const vector<Alumno> &alumnos) {
   clear_terminal();
   cout << thick_separator;
   cout << "Grupos registrados: " << endl;
@@ -84,8 +85,8 @@ void imprimir_alumno_con_mayor_promedio_del_grupo(vector<Grupo> &grupos,
   imprimir_todos(nerd_list, msg);
 }
 
-void imprimir_cantidad_de_alumnos_por_carrera(vector<Grupo> &grupos,
-                                              vector<Alumno> &alumnos) {
+void imprimir_cantidad_de_alumnos_por_carrera(const vector<Grupo> &grupos,
+                                              const vector<Alumno> &alumnos) {
   clear_terminal();
   cout << thick_separator;
   cout << "Carreras registradas: " << endl;
@@ -135,7 +136,7 @@ void imprimir_cantidad_de_alumnos_por_carrera(vector<Grupo> &grupos,
   await_enter();
 }
 
-Alumno crear_random(vector<Grupo> &grupos) {
+Alumno crear_random(const vector<Grupo> &grupos) {
   Alumno alumno;
   alumno.nombre = faker::person::fullName(faker::Locale::es_MX);
   alumno.matricula = faker::string::numeric(10);
@@ -147,7 +148,7 @@ Alumno crear_random(vector<Grupo> &grupos) {
   return alumno;
 }
 
-Alumno capturar(vector<Grupo> &grupos) {
+Alumno capturar(const vector<Grupo> &grupos) {
   clear_terminal();
   cout << thick_separator;
   Alumno alumno;
@@ -207,7 +208,8 @@ Alumno capturar(vector<Grupo> &grupos) {
 
 // Alas, 'tis true I have gone here and there.
 void exportar_reporte_de_texto(const vector<Grupo> &grupos,
-                               vector<Alumno> &alumnos, const string path) {
+                               const vector<Alumno> &alumnos,
+                               const string path) {
   // solo puede existir un reporte por archivo binario.
   // El usuario puede ser Jar Jar Binks y llamar un archivo jar.bin.bin
   string txt_path = filesystem::path(path).replace_extension(".txt").string();
@@ -218,18 +220,24 @@ void exportar_reporte_de_texto(const vector<Grupo> &grupos,
     return;
   }
 
-  // rip performance, movemos items dentro del vector minimo alumnos.length()
-  // veces. Alternativa es un vector con punteros. Contraargumento: el tiempo
-  // limite.
-  sort(alumnos.begin(), alumnos.end(),
-       [](Alumno &a, Alumno &b) -> bool { return a.promedio > b.promedio; });
+  // En vez de sortear el arreglo entero con structs, podemos ordenar sus
+  // punteros. Dado que la generacion de un reporte es accion unica, opino que
+  // tal implementacion es la mas optima que podria haberme inventado.
+
+  vector<const Alumno *> ordered;
+  fror(i, alumnos) ordered.push_back(&i);
+
+  sort(ordered.begin(), ordered.end(),
+       [](const Alumno *a, const Alumno *b) -> bool {
+         return a->promedio > b->promedio;
+       });
 
   try {
     report_file << thick_separator;
     report_file << "REPORTE DE ALUMNOS:\n";
-    for (Alumno i : alumnos) {
+    for (const Alumno *i : ordered) {
       report_file << thin_separator;
-      escribir_alumno_txt(grupos, i, report_file);
+      escribir_alumno_txt(grupos, *i, report_file);
     }
     report_file << thick_separator;
     cout << "El reporte fue generado exitosamente.\n";

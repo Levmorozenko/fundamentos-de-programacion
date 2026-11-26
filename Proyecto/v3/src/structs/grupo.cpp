@@ -4,16 +4,16 @@
 
 namespace grupo {
 
-void imprimir(Grupo &grupo) {
+void imprimir(const Grupo &grupo) {
   cout << "Nombre:  " << grupo.nombre << endl;
   cout << "Carrera: " << grupo.carrera << endl;
 }
 
-void imprimir_todos(vector<Grupo> &grupos) {
+void imprimir_todos(const vector<Grupo> &grupos) {
   cout << thick_separator;
   cout << "Grupos: " << endl;
 
-  for (Grupo i : grupos) {
+  for (const Grupo i : grupos) {
     cout << thin_separator;
     imprimir(i);
   }
