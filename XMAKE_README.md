@@ -5,24 +5,24 @@ Las tareas del parcial 3 se compilan con [xmake](https://xmake.io/) debido al de
 ## Ejemplo de uso (Windows):
 
 1) Compilar proyecto al menos una vez:
-  ```pwsh
-  git clone https://github.com/Levmorozenko/fundamentos-de-programacion
-  cd .\Practicas\Parcial3
-  xmake
-  ```
+    ```pwsh
+    git clone https://github.com/Levmorozenko/fundamentos-de-programacion
+    cd .\Practicas\Parcial3
+    xmake
+    ```
 
 2) Instalar faker-cxx:
-  ```pwsh
-  xrepo install faker-cxx
-  ```
-  *Se me olvido cual comando era.*
+    ```pwsh
+    xrepo install faker-cxx
+    ```
+    *Se me olvido cual comando era.*
   
 3) Correr practicas a traves de:
-  - **Recomendado:** `xmake run x`, lea `xmake.lua` para mas informacion sobre cada proyecto. 
-  - En caso de desear utilizar archivos compilados directamente, se pueden encontrar en la carpeta `build` generada por xmake. Ejemplo: 
+    - **Recomendado:** `xmake run x`, lea `xmake.lua` para mas informacion sobre cada proyecto. 
+    - En caso de desear utilizar archivos compilados directamente, se pueden encontrar en la carpeta `build` generada por xmake. Ejemplo: 
     ```pwsh 
     cd .\build\windows\x64\release
-    .\x.cpp
+    .\x.exe
     ```
 
 ## Clang compatibility
