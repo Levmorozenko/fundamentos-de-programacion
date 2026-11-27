@@ -1,6 +1,5 @@
 #include "../custom.cpp"
 #include "../structs.cpp"
-#include "faker-cxx/company.h"
 
 namespace maestro {
 void imprimir(const Maestro &maestro) {

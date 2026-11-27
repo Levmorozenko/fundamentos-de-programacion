@@ -2,8 +2,6 @@
 #include "../custom.cpp"
 #include "../structs.cpp"
 #include "grupo.cpp"
-#include <filesystem>
-#include <vector>
 
 namespace alumno {
 

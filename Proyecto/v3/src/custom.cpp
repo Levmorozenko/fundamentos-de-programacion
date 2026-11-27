@@ -14,12 +14,18 @@ static void set_utf8() {
 #endif
 }
 
-#include "faker-cxx/faker.h"
-#include <cstdlib>
+#include "faker-cxx/book.h"
+#include "faker-cxx/company.h"
+#include "faker-cxx/number.h"
+#include "faker-cxx/person.h"
+#include "faker-cxx/string.h"
+
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <regex>
 #include <string>
+#include <vector>
 
 using namespace std;
 // Meet the FoR macro family

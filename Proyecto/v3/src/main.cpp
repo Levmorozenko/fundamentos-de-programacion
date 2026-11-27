@@ -5,7 +5,6 @@
 
 #include "file_picking.cpp"
 #include "saving/save.cpp"
-#include <string>
 
 int main() {
   set_utf8();

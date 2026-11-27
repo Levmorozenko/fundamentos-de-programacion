@@ -1,6 +1,5 @@
 #include "../custom.cpp"
 #include "../structs.cpp"
-#include "faker-cxx/book.h"
 
 namespace grupo {
 

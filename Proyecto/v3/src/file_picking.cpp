@@ -2,8 +2,6 @@
 // Iba a ser menus.cpp pero tampoco mover el menu principal y switch aqui.
 
 #include "custom.cpp"
-#include <filesystem>
-#include <vector>
 
 using namespace std::filesystem;
 
